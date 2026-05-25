@@ -1,7 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
 using FluentValidation;
 
-namespace RescueSystem.Application.Features.RescueTeam.Command.CreateRescueTeam
+namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
 {
     public class CreateRescueTeamValidator : AbstractValidator<CreateRescueTeamCommand>
     {

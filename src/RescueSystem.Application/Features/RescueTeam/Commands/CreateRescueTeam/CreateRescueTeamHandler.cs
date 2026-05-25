@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using RescueSystem.Application.Common.Interfaces.Repositories;
 using RescueSystem.Application.DTOs.RescueTeam;
-using RescueSystem.Application.Features.RescueTeam.Command.CreateRescueTeam;
+using RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam;
 using RescueSystem.Domain.Enums;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Application.Interfaces.Respositories;
@@ -29,6 +29,7 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
             {
                 Id = teamId,
                 TeamName = request.TeamName,
+                Description = request.Description, 
                 TeamLeaderId = request.TeamLeaderId,
                 BaseLocationId = request.BaseLocationId,
                 Status = TeamStatus.AVAILABLE
@@ -55,8 +56,6 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
             {
                 throw new Exception("Tạo đội thành công nhưng không thể thêm Đội trưởng vào danh sách thành viên.");
             }
-            await _userRepository.UpdateUserRolesAsync(request.TeamLeaderId, rolesList);
-
             return new RescueTeamDTO
             {
                 Id = rescueTeam.Id,

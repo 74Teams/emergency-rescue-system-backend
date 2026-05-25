@@ -154,6 +154,23 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
        .OrderByDescending(m => m.StartTime)
        .ToListAsync();
         }
+
+        public async Task<bool> UpdateRescueTeamAsync(RescueTeam rescueTeam)
+        {
+            var existingTeam = await _context.RescueTeams.FirstOrDefaultAsync(t => t.Id == rescueTeam.Id);
+            if (existingTeam == null)
+            {
+                throw new NotFoundException("Rescue team not found");
+            }
+
+            existingTeam.TeamName = rescueTeam.TeamName;
+            existingTeam.TeamLeaderId = rescueTeam.TeamLeaderId;
+            existingTeam.BaseLocationId = rescueTeam.BaseLocationId;
+            existingTeam.Status = rescueTeam.Status;
+            existingTeam.UpdatedAt = DateTime.UtcNow;
+
+            return await _context.SaveChangesAsync() > 0;
+        }
         // public async Task<List<RescueTeam>> GetByStatusAsync(TeamStatus status)
         // {
         //     return await _context.RescueTeams.Where(x => x.Status == status).ToListAsync();

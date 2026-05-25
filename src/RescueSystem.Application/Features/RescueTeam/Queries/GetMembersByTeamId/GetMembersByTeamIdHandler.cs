@@ -15,6 +15,7 @@ namespace RescueSystem.Application.Features.RescueTeam.Queries.GetMembersByTeamI
 
         public async Task<List<RescueTeamMemberDTO>> Handle(GetMembersByTeamIdQuery request, CancellationToken cancellationToken)
         {
+            
             var members = await _rescueTeamRepository.GetMembersByTeamIdAsync(request.TeamId);
             return members.Select(m => new RescueTeamMemberDTO
             {
@@ -23,7 +24,7 @@ namespace RescueSystem.Application.Features.RescueTeam.Queries.GetMembersByTeamI
                 Email = m.Email ?? string.Empty,
                 PhoneNumber = m.PhoneNumber,
                 Avatar = m.Avatar,
-                IsActive = m.IsActive
+                IsActive = m.IsActive,
             }).ToList();
         }
     }

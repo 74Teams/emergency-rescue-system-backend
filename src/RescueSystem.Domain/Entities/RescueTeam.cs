@@ -11,6 +11,8 @@ namespace RescueSystem.Domain.Entities
 
         public Guid BaseLocationId { get; set; }
 
+        public string? Description {get; set;}
+
         public TeamStatus Status { get; set; } = TeamStatus.AVAILABLE;
 
         // Navigation Properties

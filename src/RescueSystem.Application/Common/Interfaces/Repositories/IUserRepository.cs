@@ -29,7 +29,7 @@ namespace RescueSystem.Application.Interfaces.Respositories
         Task<bool> IsEmailConfirmedAsync(ApplicationUser user);
 
         // Update User Method
-        Task UpdateUserAsync(ApplicationUser user);
+        Task<bool> UpdateUserAsync(ApplicationUser user);
         Task<Address?> GetAddressByUserIdAsync(Guid userId);
         Task UpsertAddressAsync(Address address);
 

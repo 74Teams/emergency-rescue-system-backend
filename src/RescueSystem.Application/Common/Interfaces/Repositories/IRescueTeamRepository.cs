@@ -14,6 +14,7 @@ namespace RescueSystem.Application.Common.Interfaces.Repositories
         Task<bool> AddMemberAsync(Guid teamId, Guid memberId);
         Task<List<ApplicationUser>> GetMembersByTeamIdAsync(Guid teamId);
 
+        Task<bool> UpdateRescueTeamAsync(RescueTeam rescueTeam);
         Task<bool> UpdateTeamStatusAsync(Guid teamId, TeamStatus newStatus);
         // Task<bool> UpdateAsync(RescueTeam rescueTeam);
         Task<bool> DeleteAsync(RescueTeam rescueTeam);
