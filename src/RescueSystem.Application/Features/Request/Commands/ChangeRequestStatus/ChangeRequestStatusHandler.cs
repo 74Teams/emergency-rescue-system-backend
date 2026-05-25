@@ -30,7 +30,7 @@ namespace RescueSystem.Application.Features.Request.Commands.ChangeRequestStatus
             {
                 existingRequest.Description += $" [Status Change: {previousStatus} → {request.NewStatus}. Note: {request.Note}]";
             }
-            
+
             await _requestRepository.UpdateAsync(existingRequest);
             return true;
         }

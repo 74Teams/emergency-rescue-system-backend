@@ -7,8 +7,8 @@ namespace RescueSystem.Application.DTOs.Auth
     public class AuthResponse
     {
         public string AccessToken { get; set; } = string.Empty;
-        public string? RefreshToken {get; set; }
-        public int ExpiresIn { get; set; } =3600;
+        public string? RefreshToken { get; set; }
+        public int ExpiresIn { get; set; } = 3600;
         public AuthUserDTO User { get; set; } = new();
     }
 

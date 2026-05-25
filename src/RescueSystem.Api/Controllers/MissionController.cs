@@ -89,7 +89,7 @@ namespace RescueSystem.Api.Controllers
             );
         }
 
-        
+
 
         // PUT api/missions/{id}/status
         // [Authorize(Roles = "Rescuer,Dispatcher")]
@@ -101,7 +101,7 @@ namespace RescueSystem.Api.Controllers
         public async Task<ActionResult<object>> UpdateMissionStatus(Guid id, UpdateMissionCommand command)
         {
             command.MissionId = id;
-            
+
             var res = await mediator.Send(command);
 
             if (!res)
@@ -139,7 +139,7 @@ namespace RescueSystem.Api.Controllers
             {
                 MissionId = id,
                 ChangedById = GetCurrentUserId() ?? Guid.Empty,
-                Note="Hoàn thành nhiệm vụ"
+                Note = "Hoàn thành nhiệm vụ"
             };
 
             var res = await mediator.Send(command);
@@ -157,7 +157,7 @@ namespace RescueSystem.Api.Controllers
                 )
             );
         }
-        
+
         // PUT api/missions/{id}/abort
         // [Authorize(Roles = "Rescuer,Dispatcher")]
         [HttpPut("{id}/abort")]
@@ -187,30 +187,30 @@ namespace RescueSystem.Api.Controllers
                 )
             );
         }
-            // GET api/missions/{id}/history
-            [HttpGet("{id}/history")]
-            // [Authorize]
-            [SwaggerOperation(
-                Summary = "Get mission history timeline",
-                Description = "Lấy lịch sử thay đổi trạng thái của nhiệm vụ (Dòng thời gian)"
-            )]
-            [SwaggerResponse(200, "Mission history retrieved successfully", typeof(ApiResponse<IEnumerable<MissionHistoryDTO>>))]
-            [SwaggerResponse(404, "Mission not found")]
-            public async Task<ActionResult<object>> GetMissionHistory([FromRoute] Guid id)
-            {
-                var res = await mediator.Send(new GetMissionHistoryQuery { MissionId = id });
+        // GET api/missions/{id}/history
+        [HttpGet("{id}/history")]
+        // [Authorize]
+        [SwaggerOperation(
+            Summary = "Get mission history timeline",
+            Description = "Lấy lịch sử thay đổi trạng thái của nhiệm vụ (Dòng thời gian)"
+        )]
+        [SwaggerResponse(200, "Mission history retrieved successfully", typeof(ApiResponse<IEnumerable<MissionHistoryDTO>>))]
+        [SwaggerResponse(404, "Mission not found")]
+        public async Task<ActionResult<object>> GetMissionHistory([FromRoute] Guid id)
+        {
+            var res = await mediator.Send(new GetMissionHistoryQuery { MissionId = id });
 
-                return Ok(
-                    ApiResponse<IEnumerable<MissionHistoryDTO>>.SuccessResponse(
-                        data: res,
-                        message: "Lấy lịch sử nhiệm vụ thành công",
-                        statusCode: StatusCodes.Status200OK
-                    )
-                );
-            }
-
-            
+            return Ok(
+                ApiResponse<IEnumerable<MissionHistoryDTO>>.SuccessResponse(
+                    data: res,
+                    message: "Lấy lịch sử nhiệm vụ thành công",
+                    statusCode: StatusCodes.Status200OK
+                )
+            );
         }
+
+
     }
+}
 
 

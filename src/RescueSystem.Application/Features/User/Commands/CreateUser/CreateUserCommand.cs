@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RescueSystem.Application.Features.User.Commands
 {
-    public class CreateUserCommand: IRequest<Unit>
+    public class CreateUserCommand : IRequest<Unit>
     {
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

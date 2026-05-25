@@ -8,7 +8,7 @@ using System.Text;
 
 namespace RescueSystem.Application.Features.Missions.Queries.GetMissionsPagination
 {
-    
+
     public class GetMissionsPaginationQuery : IRequest<PagedResult<MissionDTO>>
     {
         public int Page { get; set; } = 1; // trang hiện tại với mặc định là 1

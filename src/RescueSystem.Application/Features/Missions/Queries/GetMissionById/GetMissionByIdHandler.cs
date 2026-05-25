@@ -34,7 +34,7 @@ namespace RescueSystem.Application.Features.Missions.Queries.GetMissionById
                     EmergencyType = mission.Request.EmergencyType,
                     Priority = mission.Request.Priority,
                     Status = mission.Request.Status,
-                    Location = mission.Request.Location != null ? new LocationDTO 
+                    Location = mission.Request.Location != null ? new LocationDTO
                     {
                         Id = mission.Request.Location.Id,
                         Latitude = mission.Request.Location.Latitude,
@@ -44,7 +44,7 @@ namespace RescueSystem.Application.Features.Missions.Queries.GetMissionById
                     } : null, // quan trọng
                     RequestedBy = null,//TODO: CHeck
                 },
-                
+
 
                 RescueTeam = mission.RescueTeam == null ? null : new RescueTeamDTO
                 {

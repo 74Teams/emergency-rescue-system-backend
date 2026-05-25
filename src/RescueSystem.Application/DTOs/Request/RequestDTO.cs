@@ -18,10 +18,10 @@ namespace RescueSystem.Application.DTOs.Request
         public EmergencyType EmergencyType { get; set; }
         public Priority Priority { get; set; }
         public RequestStatus Status { get; set; }
-        
+
         // FIXED: Use LocationDTO instead of entity
         public LocationDTO? Location { get; set; }
-        
+
         public string Description { get; set; } = string.Empty;
         public List<RequestMediaDTO> Medias { get; set; } = new();
         public List<MissionBriefDto> Missions { get; set; } = new();
@@ -49,7 +49,8 @@ namespace RescueSystem.Application.DTOs.Request
         }
     }
 
-    public class NonRelationRequestDTO : BaseDTO {
+    public class NonRelationRequestDTO : BaseDTO
+    {
         public EmergencyType EmergencyType { get; set; }
 
         public Priority Priority { get; set; }
@@ -58,6 +59,6 @@ namespace RescueSystem.Application.DTOs.Request
         public LocationEntity? Location { get; set; }
 
     }
-    
-        
+
+
 }

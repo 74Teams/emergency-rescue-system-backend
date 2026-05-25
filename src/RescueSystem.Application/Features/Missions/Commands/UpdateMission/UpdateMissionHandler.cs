@@ -23,7 +23,7 @@
 //             {
 //                 throw new Exception("Không tìm thấy nhiệm vụ!");
 //             } // neu ko tim thay
-            
+
 //              if (request.Status == MissionStatus.ABORTED)
 //             {
 //                 if (mission.Status == MissionStatus.COMPLETED || mission.Status == MissionStatus.ABORTED)
@@ -126,7 +126,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.UpdateMission
             {
                 throw new Exception("Không tìm thấy nhiệm vụ!");
             }
-            
+
             // FIXED: Allow abort from any state except already completed/aborted
             if (request.Status == MissionStatus.ABORTED)
             {

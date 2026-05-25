@@ -10,7 +10,7 @@ namespace RescueSystem.Application.Features.ChecklistItem.Queries.GetChecklistIt
     public class GetChecklistItemsHandler : IRequestHandler<GetChecklistItemsQuery, List<ChecklistItemDTO>>
     {
         private readonly IChecklistItemRepository _itemRepository;
-        public GetChecklistItemsHandler( IChecklistItemRepository itemRepository)
+        public GetChecklistItemsHandler(IChecklistItemRepository itemRepository)
         {
             _itemRepository = itemRepository;
         }

@@ -7,7 +7,7 @@ namespace RescueSystem.Application.DTOs.RescueTeam
 {
     public class CreateRescueTeamDTO
     {
-        public string TeamName { get; set; } = string.Empty;    
+        public string TeamName { get; set; } = string.Empty;
         public Guid TeamLeaderId { get; set; }
         public Guid BaseLocationId { get; set; }
 

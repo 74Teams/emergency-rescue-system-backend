@@ -5,7 +5,7 @@ using RescueSystem.Application.Interfaces.Respositories;
 
 namespace RescueSystem.Application.Features.Commander.Queries.GetRejectedUsers
 {
-    public class GetRejectedUsersHandler: IRequestHandler<GetRejectedUsersQuery, List<UserSystemDTO>>
+    public class GetRejectedUsersHandler : IRequestHandler<GetRejectedUsersQuery, List<UserSystemDTO>>
     {
         private readonly IUserRepository _userRepository;
         public GetRejectedUsersHandler(IUserRepository userRepository)

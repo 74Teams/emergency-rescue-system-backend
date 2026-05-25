@@ -8,6 +8,6 @@ namespace RescueSystem.Application.DTOs.RescueTeam
         public string PhoneNumber { get; set; } = string.Empty;
 
         public string Avatar { get; set; } = string.Empty;
-        public bool IsActive { get; set; }=true;
+        public bool IsActive { get; set; } = true;
     }
 }

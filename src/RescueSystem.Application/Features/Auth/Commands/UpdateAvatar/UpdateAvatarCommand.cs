@@ -10,6 +10,6 @@ namespace RescueSystem.Application.Features.Auth.Commands.UpdateAvatar
     public class UpdateAvatarCommand : IRequest<AvatarDTO>
     {
         public IFormFile File { get; set; }
-        public Guid UserId {  get; set; }
+        public Guid UserId { get; set; }
     }
 }

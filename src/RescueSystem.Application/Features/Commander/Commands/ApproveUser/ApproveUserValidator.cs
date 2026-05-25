@@ -5,11 +5,11 @@ using System;
 
 namespace RescueSystem.Application.Features.Commander.Commands.ApproveUser
 {
-    public class ApproveUserValidator :  AbstractValidator<ApproveUserCommand>
+    public class ApproveUserValidator : AbstractValidator<ApproveUserCommand>
     {
         public ApproveUserValidator()
         {
-            RuleFor(x=>x.UserId).NotEmpty().WithMessage("User Id is required");
+            RuleFor(x => x.UserId).NotEmpty().WithMessage("User Id is required");
         }
     }
 }

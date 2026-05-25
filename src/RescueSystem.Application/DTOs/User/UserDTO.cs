@@ -18,8 +18,8 @@ namespace RescueSystem.Application.DTOs.User
         public string Avatar { get; set; } = string.Empty;
         public List<string> Roles { get; set; } = new();
 
-        public bool IsActive {get; set;}
-        public DateTime CreatedAt{get; set;}
+        public bool IsActive { get; set; }
+        public DateTime CreatedAt { get; set; }
 
     }
 }

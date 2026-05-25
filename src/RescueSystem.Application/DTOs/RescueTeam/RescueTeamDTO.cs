@@ -11,11 +11,11 @@ namespace RescueSystem.Application.DTOs.RescueTeam
         public Guid Id { get; set; }
         public string? TeamName { get; set; }
         public string? Status { get; set; }
-        public string? Description {get; set;}
-        public Guid? LeaderId {get;set;}
-        public LocationDTO? BaseLocation {get; set;}
-        public UserDTO? Leader{get; set;}
-        public int MemberCount{get; set;}
-        public DateTime? CreatedAt{get; set;}
+        public string? Description { get; set; }
+        public Guid? LeaderId { get; set; }
+        public LocationDTO? BaseLocation { get; set; }
+        public UserDTO? Leader { get; set; }
+        public int MemberCount { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }

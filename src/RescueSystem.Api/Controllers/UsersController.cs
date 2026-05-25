@@ -1,14 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using RescueSystem.Application.DTOs.User;
+using RescueSystem.Application.DTOs.Common;
+using RescueSystem.Application.DTOs.Commander;
 using RescueSystem.Application.Common.Response;
 using RescueSystem.Domain.Entities;
 using MediatR;
 using RescueSystem.Application.Features.User.Commands;
 using RescueSystem.Application.Features.User.Queries.GetAllUser;
 using RescueSystem.Application.Features.User.Queries.GetUserById;
+using RescueSystem.Application.Features.Commander.Commands.ApproveUser;
+using RescueSystem.Application.Features.Commander.Commands.RejectUser;
+using RescueSystem.Application.Features.Commander.Commands.ToggleUserStatus;
+using RescueSystem.Application.Features.Commander.Queries.GetPendingApprovalUsers;
+using RescueSystem.Application.Features.Commander.Queries.GetRejectedUsers;
+using RescueSystem.Application.Features.User.Queries.GetSystemUsers;
 using Swashbuckle.AspNetCore.Annotations;
 using RescueSystem.Application.Features.User.Commands.UpdateUser;
 using RescueSystem.Application.Features.User.Commands.DeleteUser;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace RescueSystem.Api.Controllers
@@ -19,12 +28,15 @@ namespace RescueSystem.Api.Controllers
     {
         // POST api/users - Create a new user
         [HttpPost]
+        [Authorize(Roles = "Commander")]
         [SwaggerOperation(
             Summary = "Create a new user",
             Description = "Tạo người dùng mới"
         )]
         [SwaggerResponse(201, "User created successfully")]
         [SwaggerResponse(500, "Internal server error")]
+        [Authorize(Roles = "Commander")]
+
         public async Task<ActionResult<object>> CreateUser([FromBody] CreateUserCommand dto)
         {
             var res = await mediator.Send(dto);
@@ -33,15 +45,16 @@ namespace RescueSystem.Api.Controllers
 
         // GET api/users - Get all users
         [HttpGet]
+        [Authorize(Roles = "Commander, Dispatcher")]
         [SwaggerOperation(
             Summary = "Get all users",
             Description = "Lấy thông tin tất cả người dùng"
         )]
-        [SwaggerResponse(200, "Success", typeof(ApiResponse<UserDTO[]>))]
+        [SwaggerResponse(200, "Success", typeof(ApiResponse<PagedResult<UserDTO>>))]
         [SwaggerResponse(500, "Internal server error")]
-        public async Task<ActionResult<object>> GetAllUsers()
+        public async Task<ActionResult<object>> GetAllUsers([FromQuery] GetAllUserQuery query)
         {
-            var res = await mediator.Send(new GetAllUserQuery());
+            var res = await mediator.Send(query);
 
             return Ok(ApiResponse<object>.SuccessResponse(res, "Get all users successfully", StatusCodes.Status200OK));
         }
@@ -55,6 +68,8 @@ namespace RescueSystem.Api.Controllers
         [SwaggerResponse(200, "Success", typeof(ApiResponse<UserDTO>))]
         [SwaggerResponse(404, "User not found")]
         [SwaggerResponse(500, "Internal server error")]
+        [Authorize(Roles = "Dispatcher")]
+
         public async Task<ActionResult<UserDTO>> GetUserById([FromRoute] Guid id)
         {
             var result = await mediator.Send(new GetUserByIdQuery { Id = id });
@@ -68,7 +83,6 @@ namespace RescueSystem.Api.Controllers
         {
             command.Id = id;
 
-            // Mediator sẽ trả về true nếu thành công, false nếu không tìm thấy user
             var result = await mediator.Send(command);
 
             if (result)
@@ -96,7 +110,7 @@ namespace RescueSystem.Api.Controllers
             var command = new DeleteUserCommand { Id = id };
             var result = await mediator.Send(command);
 
-            if (result) 
+            if (result)
             {
                 return Ok(new
                 {
@@ -106,7 +120,6 @@ namespace RescueSystem.Api.Controllers
                 });
             }
 
-            // Nếu không tìm thấy hoặc lỗi
             return NotFound(new
             {
                 status = 404,
@@ -115,5 +128,77 @@ namespace RescueSystem.Api.Controllers
             });
 
         }
+
+        [HttpGet("/api/commander/approvals/pending")]
+        public async Task<ActionResult<ApiResponse<List<UserSystemDTO>>>> GetPendingApprovals()
+        {
+            var query = new GetPendingApprovalUsersQuery();
+            var result = await mediator.Send(query);
+            if (result.Count == 0)
+            {
+                return Ok(ApiResponse<List<UserSystemDTO>>.SuccessResponse(null, "Tất cả tài khoản đã được phê duyệt", 200));
+            }
+            return Ok(ApiResponse<List<UserSystemDTO>>.SuccessResponse(result, "Success", StatusCodes.Status200OK));
+        }
+
+        [HttpGet("/api/commander/approvals/rejected")]
+        public async Task<ActionResult<ApiResponse<List<UserSystemDTO>>>> GetRejected()
+        {
+            var query = new GetRejectedUsersQuery();
+            var result = await mediator.Send(query);
+            if (result.Count == 0)
+            {
+                return Ok(ApiResponse<List<UserSystemDTO>>.SuccessResponse(null, "Không có tài khoản nào bị từ chối", 200));
+            }
+            return Ok(ApiResponse<List<UserSystemDTO>>.SuccessResponse(result, "Success", StatusCodes.Status200OK));
+        }
+
+        [HttpGet("/api/commander/users")]
+        public async Task<ActionResult<ApiResponse<List<UserSystemDTO>>>> GetSystemUsers([FromQuery] string? search, [FromQuery] string? role)
+        {
+            var query = new GetSystemUsersQuery { Search = search, Role = role };
+            var result = await mediator.Send(query);
+            return Ok(ApiResponse<List<UserSystemDTO>>.SuccessResponse(result, "Success", StatusCodes.Status200OK));
+        }
+
+
+        [HttpPost("/api/commander/approvals/{userId}")]
+        public async Task<ActionResult<ApiResponse<object>>> ApproveUser([FromRoute] Guid userId)
+        {
+            var command = new ApproveUserCommand { UserId = userId };
+            await mediator.Send(command);
+
+            return Ok(ApiResponse<object>.SuccessResponse(null, "Đã phê duyệt tài khoản thành công", 200));
+        }
+
+        [HttpPost("/api/commander/approvals/{userId}/reject")]
+        public async Task<ActionResult<ApiResponse<object>>> RejectUser([FromRoute] Guid userId)
+        {
+            var command = new RejectUserCommand { UserId = userId };
+            await mediator.Send(command);
+
+            return Ok(ApiResponse<object>.SuccessResponse(null, "Đã từ chối tài khoản", 200));
+        }
+
+        [HttpPut("/api/commander/users/{userId}/status")]
+        public async Task<ActionResult<ApiResponse<object>>> ToggleUserStatus(
+            [FromRoute] Guid userId,
+            [FromBody] ToggleStatusRequestDto request)
+        {
+            var command = new ToggleUserStatusCommand
+            {
+                UserId = userId,
+                IsActive = request.IsActive
+            };
+
+            await mediator.Send(command);
+
+            return Ok(ApiResponse<object>.SuccessResponse(null, "Cập nhật trạng thái tài khoản thành công", 200));
+        }
+    }
+
+    public class ToggleStatusRequestDto
+    {
+        public bool IsActive { get; set; }
     }
 }

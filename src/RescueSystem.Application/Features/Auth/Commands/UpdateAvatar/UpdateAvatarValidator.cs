@@ -11,7 +11,7 @@ namespace RescueSystem.Application.Features.Auth.Commands.UpdateAvatar
     {
         public UpdateAvatarValidator()
         {
-            
+
         }
     }
 }

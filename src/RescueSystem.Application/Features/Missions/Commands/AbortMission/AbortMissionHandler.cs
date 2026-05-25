@@ -25,9 +25,9 @@ namespace RescueSystem.Application.Features.Missions.Commands.AbortMission
                 throw new Exception("Không tìm thấy nhiệm vụ!");
             }
             // khoong cho abort khi nvu đã hoàn thành hoặc đã bị hủy
-            if (mission.Status == MissionStatus.COMPLETED|| mission.Status == MissionStatus.ABORTED)
+            if (mission.Status == MissionStatus.COMPLETED || mission.Status == MissionStatus.ABORTED)
             {
-                throw new Exception("Nhiệm vụ đã kết thúc, không thể hủy.");           
+                throw new Exception("Nhiệm vụ đã kết thúc, không thể hủy.");
             }
 
             var previousStatus = mission.Status;

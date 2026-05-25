@@ -4,8 +4,8 @@ using RescueSystem.Application.DTOs.User;
 
 namespace RescueSystem.Application.Features.Commander.Queries.GetPendingApprovalUsers
 {
-    public class GetPendingApprovalUsersQuery: IRequest<List<UserSystemDTO>>
+    public class GetPendingApprovalUsersQuery : IRequest<List<UserSystemDTO>>
     {
-        
+
     }
 }

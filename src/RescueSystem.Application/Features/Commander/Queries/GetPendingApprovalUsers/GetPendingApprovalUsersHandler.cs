@@ -5,7 +5,7 @@ using RescueSystem.Application.Interfaces.Respositories;
 
 namespace RescueSystem.Application.Features.Commander.Queries.GetPendingApprovalUsers
 {
-    public class GetPendingApprovalUsersHandler: IRequestHandler<GetPendingApprovalUsersQuery, List<UserSystemDTO>>
+    public class GetPendingApprovalUsersHandler : IRequestHandler<GetPendingApprovalUsersQuery, List<UserSystemDTO>>
     {
         private readonly IUserRepository _userRepository;
         public GetPendingApprovalUsersHandler(IUserRepository userRepository)

@@ -10,7 +10,7 @@ namespace RescueSystem.Application.Features.ChecklistItem.Commands.UpdateCheckli
     {
         [JsonIgnore]
         public Guid Id { get; set; }
-        public string Description { get; set; } =string.Empty;
+        public string Description { get; set; } = string.Empty;
         public bool IsCheck { get; set; }
     }
 }

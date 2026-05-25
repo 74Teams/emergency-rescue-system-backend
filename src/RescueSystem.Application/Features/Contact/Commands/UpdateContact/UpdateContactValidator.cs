@@ -7,7 +7,8 @@ namespace RescueSystem.Application.Features.Contact.Commands.UpdateContact
 {
     public class UpdateContactValidator : AbstractValidator<UpdateContactCommand>
     {
-        public UpdateContactValidator() {
+        public UpdateContactValidator()
+        {
             RuleFor(x => x.Id)
                 .NotEmpty().WithMessage("Id không được để trống")
                 .NotEqual(Guid.Empty).WithMessage("Id không hợp lệ");

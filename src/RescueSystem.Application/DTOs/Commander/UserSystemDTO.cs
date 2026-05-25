@@ -6,8 +6,8 @@ using RescueSystem.Application.DTOs.User;
 
 namespace RescueSystem.Application.DTOs.Commander
 {
-    public class UserSystemDTO:UserDTO
+    public class UserSystemDTO : UserDTO
     {
-        public bool IsPendingApproval {get; set;} 
+        public bool IsPendingApproval { get; set; }
     }
 }

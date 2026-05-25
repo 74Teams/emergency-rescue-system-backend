@@ -11,12 +11,12 @@ namespace RescueSystem.Application.Features.ChecklistItem.Queries.GetChecklistIt
     {
         private readonly IChecklistItemRepository _itemRepository;
 
-        public GetChecklistItemByIdHandler( IChecklistItemRepository itemRepository)
+        public GetChecklistItemByIdHandler(IChecklistItemRepository itemRepository)
         {
             _itemRepository = itemRepository;
         }
 
-        public async Task<ChecklistItemDTO> Handle( GetChecklistItemByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ChecklistItemDTO> Handle(GetChecklistItemByIdQuery request, CancellationToken cancellationToken)
         {
             var item = await _itemRepository
                 .GetByIdAsync(request.Id);

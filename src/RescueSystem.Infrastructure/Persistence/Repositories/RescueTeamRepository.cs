@@ -4,7 +4,8 @@ using RescueSystem.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using RescueSystem.Application.Common.Exception;
 
-namespace RescueSystem.Infrastructure.Persistence.Repositories{
+namespace RescueSystem.Infrastructure.Persistence.Repositories
+{
     public class RescueTeamRepository : IRescueTeamRepository
     {
         private readonly ApplicationDbContext _context;
@@ -16,15 +17,15 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories{
         public async Task<bool> CreateAsync(RescueTeam rescueTeam)
         {
             await _context.RescueTeams.AddAsync(rescueTeam);
-            return await _context.SaveChangesAsync()>0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<List<RescueTeam>> GetAllAsync()
         {
             return await _context.RescueTeams
                 .AsNoTracking()
-                .Include(t => t.BaseLocation) 
-                .Include(t => t.TeamLeader)   
+                .Include(t => t.BaseLocation)
+                .Include(t => t.TeamLeader)
                 .Include(t => t.Members)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
@@ -34,22 +35,25 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories{
         {
             return await _context.RescueTeams
                 .AsNoTracking()
-                .Include(t => t.BaseLocation) 
-                .Include(t => t.TeamLeader)   
+                .Include(t => t.BaseLocation)
+                .Include(t => t.TeamLeader)
                 .Include(t => t.Members)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<bool> RemoveMemberAsync(Guid teamId, Guid memberId) {
+        public async Task<bool> RemoveMemberAsync(Guid teamId, Guid memberId)
+        {
             var team = await _context.RescueTeams
-                .Include(t=>t.Members)
-                .FirstOrDefaultAsync(t=>t.Id == teamId);
-            if(team==null) {
+                .Include(t => t.Members)
+                .FirstOrDefaultAsync(t => t.Id == teamId);
+            if (team == null)
+            {
                 throw new NotFoundException("Rescue team not found");
             }
-            
-            var member = team.Members.FirstOrDefault(member=>member.Id == memberId);
-            if(member==null){
+
+            var member = team.Members.FirstOrDefault(member => member.Id == memberId);
+            if (member == null)
+            {
                 return false;
             }
 
@@ -59,18 +63,21 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories{
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> AddMemberAsync(Guid teamId, Guid memberId) {
+        public async Task<bool> AddMemberAsync(Guid teamId, Guid memberId)
+        {
             var team = await _context.RescueTeams
-                .Include(t=>t.Members)
-                .FirstOrDefaultAsync(t=>t.Id == teamId);
-            
-            if(team==null) {
+                .Include(t => t.Members)
+                .FirstOrDefaultAsync(t => t.Id == teamId);
+
+            if (team == null)
+            {
                 throw new NotFoundException("Rescue team not found");
             }
 
             var member = await _context.Users.FindAsync(memberId);
 
-            if(member==null){
+            if (member == null)
+            {
                 throw new NotFoundException("User not found");
             }
 
@@ -86,24 +93,28 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories{
             team.UpdatedAt = DateTime.UtcNow;
             return await _context.SaveChangesAsync() > 0;
         }
-        
-        public async Task<List<ApplicationUser>> GetMembersByTeamIdAsync(Guid teamId) {
+
+        public async Task<List<ApplicationUser>> GetMembersByTeamIdAsync(Guid teamId)
+        {
             var team = await _context.RescueTeams
-                .Include(t=>t.Members)
+                .Include(t => t.Members)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(t=>t.Id == teamId);
-            
-            if(team==null) {
+                .FirstOrDefaultAsync(t => t.Id == teamId);
+
+            if (team == null)
+            {
                 throw new NotFoundException("Rescue team not found");
             }
 
             return team.Members.ToList();
         }
 
-        public async Task<bool> UpdateTeamStatusAsync(Guid teamId, TeamStatus newStatus) {
+        public async Task<bool> UpdateTeamStatusAsync(Guid teamId, TeamStatus newStatus)
+        {
             var team = await _context.RescueTeams.FindAsync(teamId);
 
-            if(team==null) {
+            if (team == null)
+            {
                 throw new NotFoundException("Rescue team not found");
             }
             team.Status = newStatus;
@@ -114,12 +125,12 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories{
         public async Task<bool> DeleteAsync(RescueTeam rescueTeam)
         {
             var members = await _context.Users.Where(u => u.RescueTeamId == rescueTeam.Id).ToListAsync();
-            foreach(var member in members)
+            foreach (var member in members)
             {
                 member.RescueTeamId = null; // Gỡ thành viên khỏi đội
             }
             _context.RescueTeams.Remove(rescueTeam);
-            
+
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }
@@ -134,14 +145,14 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories{
             {
                 throw new NotFoundException("Rescue team not found");
             }
-             return await _context.Missions
-        .AsNoTracking()
-        .Include(m => m.Request)
-        .Include(m => m.Dispatcher)
-        .Include(m => m.RescueTeam)
-        .Where(m => m.RescueTeamId == teamId)
-        .OrderByDescending(m => m.StartTime)
-        .ToListAsync();
+            return await _context.Missions
+       .AsNoTracking()
+       .Include(m => m.Request)
+       .Include(m => m.Dispatcher)
+       .Include(m => m.RescueTeam)
+       .Where(m => m.RescueTeamId == teamId)
+       .OrderByDescending(m => m.StartTime)
+       .ToListAsync();
         }
         // public async Task<List<RescueTeam>> GetByStatusAsync(TeamStatus status)
         // {

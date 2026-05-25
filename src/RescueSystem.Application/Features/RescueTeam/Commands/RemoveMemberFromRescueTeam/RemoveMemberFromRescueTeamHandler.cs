@@ -10,21 +10,22 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.RemoveMemberFrom
     {
         private readonly IRescueTeamRepository _rescueTeamRepository;
         private readonly IUserRepository _userRepository;
-        public RemoveMemberFromRescueTeamHandler(IRescueTeamRepository rescueTeamRepository, IUserRepository userRepository) {
+        public RemoveMemberFromRescueTeamHandler(IRescueTeamRepository rescueTeamRepository, IUserRepository userRepository)
+        {
             _rescueTeamRepository = rescueTeamRepository;
-            _userRepository = userRepository;   
+            _userRepository = userRepository;
         }
-        
+
         public async Task<bool> Handle(RemoveMemberFromRescueTeamCommand request, CancellationToken cancellationToken)
         {
-           var team = await _rescueTeamRepository.GetByIdAsync(request.TeamId);
+            var team = await _rescueTeamRepository.GetByIdAsync(request.TeamId);
             if (team != null && team.TeamLeaderId == request.MemberId)
             {
                 throw new BadRequestException("Không thể đuổi Đội trưởng ra khỏi đội. Vui lòng chuyển giao chức Đội trưởng hoặc giải tán đội trước!");
             }
             var isRemoved = await _rescueTeamRepository.RemoveMemberAsync(request.TeamId, request.MemberId);
             if (!isRemoved) return false;
-            
+
             var currentRoles = await _userRepository.GetUserRolesAsync(request.MemberId);
             var rolesList = currentRoles.ToList();
 

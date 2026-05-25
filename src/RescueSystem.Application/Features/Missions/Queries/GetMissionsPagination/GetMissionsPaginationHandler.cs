@@ -57,7 +57,7 @@ namespace RescueSystem.Application.Features.Missions.Queries.GetMissionsPaginati
                         Id = m.DispatcherId,
                         FullName = m.Dispatcher != null ? m.Dispatcher.FullName : null,
                     },
-                    
+
                     RescueTeam = new RescueTeamDTO
                     {
                         Id = m.RescueTeamId,

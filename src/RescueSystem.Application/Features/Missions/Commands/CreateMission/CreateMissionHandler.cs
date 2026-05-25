@@ -36,7 +36,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.CreateMission
 
             var busyMission = await _missionRepository
                 .GetActiveMissionByTeamIdAsync(request.RescueTeamId);
-            if(busyMission != null)
+            if (busyMission != null)
             {
                 throw new BadRequestException("Team này đang bận với một mission khác");
             }

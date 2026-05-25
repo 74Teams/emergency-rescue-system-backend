@@ -9,7 +9,7 @@ namespace RescueSystem.Application.DTOs.Auth
     {
         public Guid Id { get; set; }
         public Guid? RescueTeamId { get; set; }
-        public string? TeamName { get; set; }   
+        public string? TeamName { get; set; }
         //alias
         [System.Text.Json.Serialization.JsonPropertyName("fullName")]
         public string Fullname { get; set; } = string.Empty;

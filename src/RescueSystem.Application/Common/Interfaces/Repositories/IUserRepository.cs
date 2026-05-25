@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using RescueSystem.Application.DTOs.User;
 using RescueSystem.Application.DTOs.Commander;
+using RescueSystem.Application.DTOs.Common;
 
 namespace RescueSystem.Application.Interfaces.Respositories
 {
@@ -20,6 +21,7 @@ namespace RescueSystem.Application.Interfaces.Respositories
         Task<ApplicationUser?> GetUserByIdAsync(string id);
         Task<ApplicationUser?> GetUserProfileByIdAsync(Guid userId);
         Task<List<ApplicationUser>> GetAllUsersAsync();
+        Task<PagedResult<UserDTO>> GetPagedUsersAsync(int page, int pageSize, string? search, string? role);
 
         // Password & Email Methods
         Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
@@ -42,7 +44,7 @@ namespace RescueSystem.Application.Interfaces.Respositories
 
         Task UpdateUserRolesAsync(Guid userId, IList<string> newRoles);
 
-        Task <IList<string>> GetUserRolesAsync(Guid userId);
+        Task<IList<string>> GetUserRolesAsync(Guid userId);
 
         Task<IList<UserSystemDTO>> GetPendingApprovalUsers();
 

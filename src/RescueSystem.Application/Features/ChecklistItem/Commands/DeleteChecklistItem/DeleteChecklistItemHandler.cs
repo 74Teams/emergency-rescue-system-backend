@@ -10,26 +10,26 @@ namespace RescueSystem.Application.Features.ChecklistItem.Commands.DeleteCheckli
     {
         private readonly IChecklistItemRepository _itemRepository;
 
-            public DeleteChecklistItemHandler(IChecklistItemRepository itemRepository)
+        public DeleteChecklistItemHandler(IChecklistItemRepository itemRepository)
+        {
+            _itemRepository = itemRepository;
+        }
+
+        public async Task<Unit> Handle(DeleteChecklistItemCommand request, CancellationToken cancellationToken)
+        {
+            var item = await _itemRepository.GetByIdAsync(request.Id);
+
+            if (item == null)
             {
-                _itemRepository = itemRepository;
+                throw new Exception("Không tìm thấy checklist item");
             }
 
-            public async Task<Unit> Handle(DeleteChecklistItemCommand request, CancellationToken cancellationToken)
-            {
-                var item = await _itemRepository.GetByIdAsync(request.Id);
+            _itemRepository.Delete(item);
 
-                if (item == null)
-                {
-                    throw new Exception("Không tìm thấy checklist item");
-                }
+            await _itemRepository.SaveChangesAsync(cancellationToken);
 
-                _itemRepository.Delete(item);
-
-                await _itemRepository.SaveChangesAsync(cancellationToken);
-
-                return Unit.Value;
-            }
+            return Unit.Value;
+        }
 
     }
 }

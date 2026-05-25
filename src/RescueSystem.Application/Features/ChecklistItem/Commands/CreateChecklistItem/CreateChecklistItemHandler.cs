@@ -10,7 +10,7 @@ namespace RescueSystem.Application.Features.ChecklistItem.Commands.CreateCheckli
     {
         private readonly IChecklistItemRepository _itemRepository;
         public CreateChecklistItemHandler(IChecklistItemRepository itemRepository)
-        {   
+        {
             _itemRepository = itemRepository;
         }
         public async Task<Guid> Handle(CreateChecklistItemCommand request, CancellationToken cancellationToken)

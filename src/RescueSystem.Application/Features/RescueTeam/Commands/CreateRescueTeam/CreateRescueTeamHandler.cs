@@ -8,9 +8,9 @@ using RescueSystem.Domain.Entities;
 using RescueSystem.Application.Interfaces.Respositories;
 using System.Linq;
 
-namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam 
+namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
 {
-    public class CreateRescueTeamHandler: IRequestHandler<CreateRescueTeamCommand, RescueTeamDTO>
+    public class CreateRescueTeamHandler : IRequestHandler<CreateRescueTeamCommand, RescueTeamDTO>
     {
         private readonly IRescueTeamRepository _rescueTeamRepository;
         private readonly IUserRepository _userRepository;
@@ -35,7 +35,7 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
             };
 
             var createdTeam = await _rescueTeamRepository.CreateAsync(rescueTeam);
-            if(!createdTeam)
+            if (!createdTeam)
             {
                 throw new Exception("Không thể tạo đội cứu hộ");
             }
@@ -51,7 +51,7 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
                 throw new Exception("Người này đã là leader của một đội cứu hộ khác");
             }
             var memberAdded = await _rescueTeamRepository.AddMemberAsync(teamId, request.TeamLeaderId);
-            if(!memberAdded)
+            if (!memberAdded)
             {
                 throw new Exception("Tạo đội thành công nhưng không thể thêm Đội trưởng vào danh sách thành viên.");
             }

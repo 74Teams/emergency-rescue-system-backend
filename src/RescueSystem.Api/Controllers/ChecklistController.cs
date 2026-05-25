@@ -121,7 +121,7 @@ namespace RescueSystem.Api.Controllers
 
         [Authorize(Roles = "Dispatcher,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update( Guid id, UpdateChecklistCommand command)
+        public async Task<IActionResult> Update(Guid id, UpdateChecklistCommand command)
         {
             command.Id = id;
             await _mediator.Send(command);

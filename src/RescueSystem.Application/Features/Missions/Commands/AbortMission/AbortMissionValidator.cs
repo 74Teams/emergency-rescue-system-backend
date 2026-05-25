@@ -7,7 +7,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.AbortMission
 {
     public class AbortMissionValidator : AbstractValidator<AbortMissionCommand>
     {
-       public AbortMissionValidator()
+        public AbortMissionValidator()
         {
             RuleFor(x => x.MissionId)
                 .NotEmpty().When(x => x.MissionId != Guid.Empty)

@@ -10,7 +10,7 @@ namespace RescueSystem.Application.Features.User.Commands
 {
     public class CreateUserHandler(IUserRepository userRepository) : IRequestHandler<CreateUserCommand, Unit>
     {
-        
+
         public async Task<Unit> Handle(CreateUserCommand req, CancellationToken cancellationToken)
         {
             if (req.Roles == null || !req.Roles.Any())

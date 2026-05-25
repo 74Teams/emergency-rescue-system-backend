@@ -14,7 +14,7 @@ namespace RescueSystem.Application.Features.Role.Commands.CreateRole
 
         public async Task<Unit> Handle(CreateRoleCommand req, CancellationToken cancellationToken)
         {
-            
+
             var role = new ApplicationRole
             {
                 Id = Guid.NewGuid(),

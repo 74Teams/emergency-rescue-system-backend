@@ -10,8 +10,8 @@ namespace RescueSystem.Application.Common.Interfaces.Repositories
         Task<RescueTeam?> GetByIdAsync(Guid id);
         // Task<List<RescueTeam>> GetByStatusAsync(TeamStatus status);
         Task<bool> CreateAsync(RescueTeam rescueTeam);
-        Task<bool>RemoveMemberAsync(Guid teamId, Guid memberId);
-        Task<bool>AddMemberAsync(Guid teamId, Guid memberId);
+        Task<bool> RemoveMemberAsync(Guid teamId, Guid memberId);
+        Task<bool> AddMemberAsync(Guid teamId, Guid memberId);
         Task<List<ApplicationUser>> GetMembersByTeamIdAsync(Guid teamId);
 
         Task<bool> UpdateTeamStatusAsync(Guid teamId, TeamStatus newStatus);

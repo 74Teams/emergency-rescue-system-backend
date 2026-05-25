@@ -139,7 +139,7 @@ namespace RescueSystem.Api.Controllers
 
             return Ok(ApiResponse<object>.SuccessResponse(null, "Thêm thành viên thành công", StatusCodes.Status200OK));
         }
-        
+
         // DELETE : api/RescueTeam/{teamId}/member/{memberId}
         [HttpDelete("{teamId}/member/{memberId}")]
         [SwaggerOperation(

@@ -7,7 +7,7 @@ namespace RescueSystem.Application.Features.Contact.Commands.DeleteContact
 {
     public class DeleteContactCommand : IRequest<bool>
     {
-            public Guid Id { get; set; }
-            public Guid UserId { get; set; }  
+        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
     }
 }

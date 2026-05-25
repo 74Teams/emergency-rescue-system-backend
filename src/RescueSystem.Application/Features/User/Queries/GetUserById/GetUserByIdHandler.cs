@@ -11,7 +11,7 @@ namespace RescueSystem.Application.Features.User.Queries.GetUserById
 {
     public class GetUserByIdHandler(IUserRepository userRepository) : IRequestHandler<GetUserByIdQuery, UserDTO>
     {
-      
+
 
         public async Task<UserDTO> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {

@@ -14,7 +14,7 @@ namespace RescueSystem.Application.Features.Checklist.Queries.GetChecklistDetail
         {
             _checklistRepository = checklistRepository;
         }
-        
+
         public async Task<ChecklistDetailDTO> Handle(GetChecklistDetailQuery request, CancellationToken cancellationToken)
         {
             var checklist = await _checklistRepository.GetByIdAsync(request.Id);

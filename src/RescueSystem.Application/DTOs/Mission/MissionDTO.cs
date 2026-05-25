@@ -14,18 +14,18 @@ namespace RescueSystem.Application.DTOs.Mission
         public Guid Id { get; set; }
         public Guid RequestId { get; set; }
         public string? Description { get; set; }
-        
+
         // FIXED: Use nested UserDTO instead of flat properties
         public UserDTO? Dispatcher { get; set; }
-        
+
         // FIXED: Use nested RescueTeamDTO instead of flat properties
         public RescueTeamDTO? RescueTeam { get; set; }
-        
+
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
-        
+
         // FIXED: Use enum instead of string
         public MissionStatus Status { get; set; }
     }

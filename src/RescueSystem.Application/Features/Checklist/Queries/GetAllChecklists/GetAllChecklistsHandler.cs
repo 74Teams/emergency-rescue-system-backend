@@ -19,7 +19,7 @@ namespace RescueSystem.Application.Features.Checklist.Queries.GetAllChecklists
         public async Task<List<ChecklistDTO>> Handle(GetAllChecklistsQuery request, CancellationToken cancellationToken)
         {
             var checklists = await _checkListRepository.GetAllAsync();
-            
+
             return checklists.Select(c => new ChecklistDTO
             {
                 Id = c.Id,

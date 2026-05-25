@@ -29,7 +29,7 @@ namespace RescueSystem.Application.Features.Auth.Queries.Profile
             }
 
             var roles = await _userRepository.GetUserRolesAsync(foundUser);
-            
+
             var address = await _userRepository.GetAddressByUserIdAsync(foundUser.Id);
 
             string? teamName = null;

@@ -30,7 +30,7 @@ namespace RescueSystem.Application.Features.Request.Commands.CreateRequest
             RuleFor(x => x.Files)
                 .Must(files => files == null || files.Count <= 10)
                 .WithMessage("Số lượng file tối đa là 10");
-            RuleFor(x=>x.Priority)
+            RuleFor(x => x.Priority)
                 .IsInEnum().WithMessage("Mức độ ưu tiên không hợp lệ");
         }
     }

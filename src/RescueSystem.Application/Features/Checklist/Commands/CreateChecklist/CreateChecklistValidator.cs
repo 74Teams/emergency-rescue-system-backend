@@ -7,7 +7,7 @@ namespace RescueSystem.Application.Features.Checklist.Commands.CreateChecklist
 {
     public class CreateChecklistValidator : AbstractValidator<CreateChecklistCommand>
     {
-        public CreateChecklistValidator() 
+        public CreateChecklistValidator()
         {
             RuleFor(x => x.Title)
                .NotEmpty()

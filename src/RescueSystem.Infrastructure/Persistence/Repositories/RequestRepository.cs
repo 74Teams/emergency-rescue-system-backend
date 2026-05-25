@@ -27,7 +27,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
         }
         public Task<RescueRequest?> GetByIdAsync(Guid id)
         {
-            
+
             return _context.Requests
                 .AsNoTracking()
                 .Include(r => r.Medias)

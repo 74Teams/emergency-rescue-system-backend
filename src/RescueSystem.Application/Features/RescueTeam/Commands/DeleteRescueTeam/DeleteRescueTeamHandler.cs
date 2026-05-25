@@ -1,6 +1,6 @@
 using MediatR;
 using RescueSystem.Application.Common.Interfaces.Repositories;
-using RescueSystem.Application.Interfaces.Respositories; 
+using RescueSystem.Application.Interfaces.Respositories;
 using System.Linq;
 
 namespace RescueSystem.Application.Features.RescueTeam.Commands.DeleteRescueTeam
@@ -8,10 +8,10 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.DeleteRescueTeam
     public class DeleteRescueTeamHandler : IRequestHandler<DeleteRescueTeamCommand, bool>
     {
         private readonly IRescueTeamRepository _rescueTeamRepository;
-        private readonly IUserRepository _userRepository; 
+        private readonly IUserRepository _userRepository;
         public DeleteRescueTeamHandler(
-            IRescueTeamRepository rescueTeamRepository, 
-            IUserRepository userRepository) 
+            IRescueTeamRepository rescueTeamRepository,
+            IUserRepository userRepository)
         {
             _rescueTeamRepository = rescueTeamRepository;
             _userRepository = userRepository;
@@ -25,10 +25,10 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.DeleteRescueTeam
                 throw new KeyNotFoundException("Rescue team not found");
             }
 
-            var leaderId = team.TeamLeaderId; 
+            var leaderId = team.TeamLeaderId;
 
             var isDeleted = await _rescueTeamRepository.DeleteAsync(team);
-            
+
             if (!isDeleted)
             {
                 return false;

@@ -113,7 +113,7 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.ReferenceHandler =
             System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-            
+
         // options.JsonSerializerOptions.Converters.Add(
         //    new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
     });

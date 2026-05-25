@@ -12,7 +12,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.FinishMission
     {
         private readonly IMissionRepository _missionRepository;
 
-        private readonly IRescueTeamRepository _rescueTeamRepository; 
+        private readonly IRescueTeamRepository _rescueTeamRepository;
 
         public FinishMissionCommandHandler(IMissionRepository missionRepository, IRescueTeamRepository rescueTeamRepository)
         {

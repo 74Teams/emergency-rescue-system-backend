@@ -16,7 +16,7 @@ namespace RescueSystem.Application.Features.Checklist.Commands.DeleteChecklist
             _checklistRepository = checklistRepository;
         }
 
-        public async Task<Unit> Handle( DeleteChecklistCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteChecklistCommand request, CancellationToken cancellationToken)
         {
             var checklist = await _checklistRepository.GetByIdAsync(request.Id);
 

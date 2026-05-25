@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RescueSystem.Application.Common.Exception;
 using RescueSystem.Application.DTOs.Commander;
+using RescueSystem.Application.DTOs.Common;
 using RescueSystem.Application.DTOs.User;
 using RescueSystem.Application.Interfaces.Respositories;
 using RescueSystem.Domain.Entities;
@@ -128,6 +129,84 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
             return await _userManager.Users.ToListAsync();
         }
 
+        public async Task<PagedResult<UserDTO>> GetPagedUsersAsync(int page, int pageSize, string? search, string? role)
+        {
+            page = page < 1 ? 1 : page;
+            pageSize = pageSize < 1 ? 10 : pageSize;
+
+            var query = _context.Users
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var keyword = search.Trim();
+                query = query.Where(u =>
+                    u.FullName.Contains(keyword) ||
+                    (!string.IsNullOrEmpty(u.UserName) && u.UserName.Contains(keyword)) ||
+                    (!string.IsNullOrEmpty(u.Email) && u.Email.Contains(keyword)) ||
+                    (!string.IsNullOrEmpty(u.PhoneNumber) && u.PhoneNumber.Contains(keyword)));
+            }
+
+            if (!string.IsNullOrWhiteSpace(role))
+            {
+                query = query.Where(u => _context.UserRoles.Any(ur => ur.UserId == u.Id &&
+                    _context.Roles.Any(r => r.Id == ur.RoleId && r.Name == role)));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var users = await query
+                .OrderByDescending(u => u.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var userIds = users.Select(u => u.Id).ToList();
+
+            var roleLinks = await (
+                from userRole in _context.UserRoles
+                join roleEntity in _context.Roles on userRole.RoleId equals roleEntity.Id
+                where userIds.Contains(userRole.UserId)
+                select new { userRole.UserId, RoleName = roleEntity.Name }
+            ).ToListAsync();
+
+            var rolesByUser = roleLinks
+                .GroupBy(link => link.UserId)
+                .ToDictionary(
+                    group => group.Key,
+                    group => group.Select(link => link.RoleName)
+                        .Where(name => !string.IsNullOrEmpty(name))
+                        .Select(name => name!)
+                        .ToList());
+
+            var items = users.Select(user => new UserDTO
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
+                DateOfBirth = user.DateOfBirth,
+                Avatar = user.Avatar,
+                IsActive = user.IsActive,
+                CreatedAt = user.CreatedAt,
+                Roles = rolesByUser.TryGetValue(user.Id, out var roles) ? roles : new List<string>()
+            }).ToList();
+
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+            return new PagedResult<UserDTO>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                TotalPages = totalPages,
+                CurrentPage = page,
+                PageSize = pageSize
+            };
+        }
+
         // get user by profile id
         public async Task<ApplicationUser?> GetUserProfileByIdAsync(Guid userId)
         {
@@ -171,8 +250,8 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
             // 2. Lấy danh sách Roles hiện tại trong Database
             var currentRoles = await _userManager.GetRolesAsync(user);
 
-            var rolesToRemove = currentRoles.Except(newRoles).ToList(); 
-            var rolesToAdd = newRoles.Except(currentRoles).ToList();   
+            var rolesToRemove = currentRoles.Except(newRoles).ToList();
+            var rolesToAdd = newRoles.Except(currentRoles).ToList();
 
             if (rolesToRemove.Any())
             {
@@ -181,7 +260,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
 
             if (rolesToAdd.Any())
             {
-                await _userManager.AddToRolesAsync(user, rolesToAdd); 
+                await _userManager.AddToRolesAsync(user, rolesToAdd);
             }
         }
 
@@ -190,10 +269,10 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
-                return new List<string>(); 
+                return new List<string>();
             }
-        
-            return await _userManager.GetRolesAsync(user); 
+
+            return await _userManager.GetRolesAsync(user);
         }
 
         public async Task<IList<UserSystemDTO>> GetPendingApprovalUsers()
@@ -214,9 +293,9 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
                             IsPendingApproval = u.IsPendingApproval,
                             CreatedAt = u.CreatedAt,
                             Roles = (from userRole in _context.UserRoles
-                                    join role in _context.Roles on userRole.RoleId equals role.Id
-                                    where userRole.UserId == u.Id
-                                    select role.Name).ToList()
+                                     join role in _context.Roles on userRole.RoleId equals role.Id
+                                     where userRole.UserId == u.Id
+                                     select role.Name).ToList()
                         };
 
             return await query.ToListAsync();
@@ -224,7 +303,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
         public async Task<IList<UserSystemDTO>> GetRejectedUsers()
         {
             var query = from u in _context.Users
-                        where u.IsPendingApproval == false && u.IsActive==false
+                        where u.IsPendingApproval == false && u.IsActive == false
                         select new UserSystemDTO
                         {
                             Id = u.Id,
@@ -239,9 +318,9 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
                             IsPendingApproval = u.IsPendingApproval,
                             CreatedAt = u.CreatedAt,
                             Roles = (from userRole in _context.UserRoles
-                                    join role in _context.Roles on userRole.RoleId equals role.Id
-                                    where userRole.UserId == u.Id
-                                    select role.Name).ToList()
+                                     join role in _context.Roles on userRole.RoleId equals role.Id
+                                     where userRole.UserId == u.Id
+                                     select role.Name).ToList()
                         };
 
             return await query.ToListAsync();
@@ -253,7 +332,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                query = query.Where(u => u.FullName.Contains(search) 
+                query = query.Where(u => u.FullName.Contains(search)
                 //TODO: Them cai nay vo
                 // || u.UserName.Contains(search) 
                 // || u.Email.Contains(search)
@@ -264,7 +343,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
             if (!string.IsNullOrWhiteSpace(role))
             {
                 query = query.Where(u => _context.UserRoles
-                    .Any(ur => ur.UserId == u.Id && 
+                    .Any(ur => ur.UserId == u.Id &&
                             _context.Roles.Any(r => r.Id == ur.RoleId && r.Name == role)));
             }
 
@@ -276,9 +355,9 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
                 UserName = u.UserName,
                 PhoneNumber = u.PhoneNumber,
                 IsActive = u.IsActive,
-                IsPendingApproval = u.IsPendingApproval, 
+                IsPendingApproval = u.IsPendingApproval,
                 CreatedAt = u.CreatedAt,
-        
+
                 Roles = _context.UserRoles
                     .Where(ur => ur.UserId == u.Id)
                     .Select(ur => _context.Roles.FirstOrDefault(r => r.Id == ur.RoleId)!.Name!)

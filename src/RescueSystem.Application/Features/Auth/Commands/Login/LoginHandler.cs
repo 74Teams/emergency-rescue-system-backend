@@ -20,10 +20,10 @@ namespace RescueSystem.Application.Features.Auth.Commands.Login
         private readonly IConfiguration _configuration;
 
         public LoginHandler(
-            IUserRepository userRepository, 
+            IUserRepository userRepository,
             ITokenService tokenService,
             IRefreshTokenService refreshTokenService,
-            IConfiguration configuration )
+            IConfiguration configuration)
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
@@ -55,7 +55,7 @@ namespace RescueSystem.Application.Features.Auth.Commands.Login
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,           // sau này thêm refresh token service
-                ExpiresIn = expiryMinutes*60,
+                ExpiresIn = expiryMinutes * 60,
                 User = new AuthUserDTO
                 {
                     Id = user.Id,

@@ -30,11 +30,11 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.TeamName, opt => opt.MapFrom(src => src.RescueTeam != null ? src.RescueTeam.TeamName : string.Empty));
 
         CreateMap<RescueTeam, RescueTeamDTO>()
-            .ForMember(dest => dest.Leader, opt => opt.MapFrom(src => src.TeamLeader)) 
+            .ForMember(dest => dest.Leader, opt => opt.MapFrom(src => src.TeamLeader))
             .ForMember(dest => dest.LeaderId, opt => opt.MapFrom(src => src.TeamLeaderId))
             .ForMember(dest => dest.MemberCount, opt => opt.MapFrom(src => src.Members != null ? src.Members.Count : 0));
         CreateMap<ApplicationUser, UserSystemDTO>()
-            .IncludeBase<ApplicationUser, UserDTO>() 
+            .IncludeBase<ApplicationUser, UserDTO>()
             .ForMember(dest => dest.IsPendingApproval, opt => opt.MapFrom(src => src.IsPendingApproval));
     }
 }

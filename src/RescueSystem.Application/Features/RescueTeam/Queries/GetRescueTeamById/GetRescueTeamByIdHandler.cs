@@ -4,7 +4,8 @@ using RescueSystem.Application.Common.Exception;
 using RescueSystem.Application.Common.Interfaces.Repositories;
 using RescueSystem.Application.DTOs.RescueTeam;
 
-namespace RescueSystem.Application.Features.RescueTeam.Queries.GetRescueTeamById{
+namespace RescueSystem.Application.Features.RescueTeam.Queries.GetRescueTeamById
+{
     public class GetRescueTeamByIdHandler : IRequestHandler<GetRescueTeamByIdQuery, RescueTeamDTO>
     {
         private readonly IRescueTeamRepository _rescueTeamRepository;
@@ -23,7 +24,7 @@ namespace RescueSystem.Application.Features.RescueTeam.Queries.GetRescueTeamById
             {
                 throw new NotFoundException("Rescue team not found");
             }
-            return _mapper.Map<RescueTeamDTO>(team);        
+            return _mapper.Map<RescueTeamDTO>(team);
         }
     }
 }

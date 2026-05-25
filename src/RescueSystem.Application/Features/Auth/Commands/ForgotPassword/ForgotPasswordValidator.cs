@@ -7,7 +7,8 @@ namespace RescueSystem.Application.Features.Auth.Commands.ForgotPassword
 {
     public class ForgotPasswordValidator : AbstractValidator<ForgotPasswordCommand>
     {
-        public ForgotPasswordValidator() {
+        public ForgotPasswordValidator()
+        {
             RuleFor(x => x.Email)
                     .NotEmpty().WithMessage("Vui lòng nhập Email")
                     .EmailAddress().WithMessage("Email không hợp lệ");

@@ -5,6 +5,6 @@ namespace RescueSystem.Application.Features.RescueTeam.Queries.GetMissionsByTeam
 {
     public class GetMissionsByTeamIdQuery : IRequest<List<MissionDTO>>
     {
-        public Guid TeamId {get; set;}
+        public Guid TeamId { get; set; }
     }
 }
