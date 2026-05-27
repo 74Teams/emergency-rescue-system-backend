@@ -23,7 +23,6 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
 
         public async Task<ChecklistItem?> GetByIdAsync(Guid id)
         {
-            //EDIT: DIEU 18/05/2026 - Thêm AsNoTracking để tránh tracking entity khi chỉ cần đọc dữ liệu
             return await _context.ChecklistItems
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);

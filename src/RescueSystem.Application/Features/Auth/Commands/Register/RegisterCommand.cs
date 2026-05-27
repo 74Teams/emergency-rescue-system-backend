@@ -13,5 +13,6 @@ namespace RescueSystem.Application.Features.Auth.Commands.Register
         public DateTime DateOfBirth { get; set; }
         public string Avatar { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
+        public string? Role { get; set; }
     }
 }

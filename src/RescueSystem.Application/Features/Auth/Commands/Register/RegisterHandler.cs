@@ -27,6 +27,13 @@ namespace RescueSystem.Application.Features.Auth.Commands.Register
                 throw new BadRequestException("Email đã được sử dụng");
             }
 
+           
+
+            var role = string.IsNullOrWhiteSpace(request.Role) ? RoleEnum.Citizen.ToString() : request.Role;
+            var roles = new List<string> { role };
+            var isCitizen = string.Equals(role, RoleEnum.Citizen.ToString(), StringComparison.OrdinalIgnoreCase);
+            var isPendingApproval = string.Equals(role, RoleEnum.Dispatcher.ToString(), StringComparison.OrdinalIgnoreCase)
+                || string.Equals(role, RoleEnum.Rescuer.ToString(), StringComparison.OrdinalIgnoreCase);
             var user = new ApplicationUser
             {
                 Id = Guid.NewGuid(),
@@ -37,12 +44,11 @@ namespace RescueSystem.Application.Features.Auth.Commands.Register
                 Address = request.Address,
                 DateOfBirth = request.DateOfBirth,
                 Avatar = request.Avatar,
-                IsActive = true,
+                IsActive = isCitizen,
+                IsPendingApproval = isPendingApproval,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
-
-            var roles = new List<string> { RoleEnum.Citizen.ToString() };
             var result = await _userRepository.CreateUserAsync(user, request.Password, roles);
 
             if (!result.Succeeded)

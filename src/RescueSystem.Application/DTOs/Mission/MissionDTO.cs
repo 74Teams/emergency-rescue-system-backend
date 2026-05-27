@@ -27,7 +27,7 @@ namespace RescueSystem.Application.DTOs.Mission
         public DateTime UpdateAt { get; set; }
 
         // FIXED: Use enum instead of string
-        public MissionStatus Status { get; set; }
+        public RequestStatus Status { get; set; }
     }
 }
 

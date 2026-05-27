@@ -1,0 +1,15 @@
+info:
+  name: Get pending approval user
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{url}}/commander/approvals/pending"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

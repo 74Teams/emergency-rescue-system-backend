@@ -31,7 +31,7 @@ namespace RescueSystem.Application.Features.Request.Queries.GetRequestById
             result.Missions = requestEntity.Missions.Select(m => new MissionBriefDto
             {
                 Id = m.Id,
-                Status = m.Status,
+                Status = requestEntity.Status,
                 RescueTeamId = m.RescueTeamId,
                 TeamName = m.RescueTeam?.TeamName,
                 StartTime = m.StartTime,

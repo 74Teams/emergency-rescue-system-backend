@@ -41,7 +41,7 @@ namespace RescueSystem.Application.DTOs.Request
         public class MissionBriefDto
         {
             public Guid Id { get; set; }
-            public MissionStatus Status { get; set; }
+            public RequestStatus Status { get; set; }
             public Guid RescueTeamId { get; set; }
             public string? TeamName { get; set; }
             public DateTime StartTime { get; set; }

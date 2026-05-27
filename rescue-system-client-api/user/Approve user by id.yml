@@ -1,0 +1,19 @@
+info:
+  name: Approve user by id
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{url}}/commander/approvals/:id"
+  params:
+    - name: id
+      value: 86e566e5-6f1d-46c3-b394-0559c0bb53c7
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

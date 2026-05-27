@@ -67,7 +67,7 @@ namespace RescueSystem.Application.Features.Missions.Queries.GetMissionsPaginati
                     EndTime = m.EndTime.HasValue ? m.EndTime.Value.AddHours(7) : null,
                     CreateAt = m.CreatedAt.AddHours(7),
                     UpdateAt = m.UpdatedAt.AddHours(7),
-                    Status = m.Status
+                    Status = m.Request!.Status
                 })
                 .ToListAsync(cancellationToken);
             return new PagedResult<MissionDTO>

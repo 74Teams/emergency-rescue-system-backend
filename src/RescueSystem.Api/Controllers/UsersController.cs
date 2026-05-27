@@ -129,6 +129,7 @@ namespace RescueSystem.Api.Controllers
 
         }
 
+        // Get pending users
         [HttpGet("/api/commander/approvals/pending")]
         public async Task<ActionResult<ApiResponse<List<UserSystemDTO>>>> GetPendingApprovals()
         {
@@ -136,11 +137,12 @@ namespace RescueSystem.Api.Controllers
             var result = await mediator.Send(query);
             if (result.Count == 0)
             {
-                return Ok(ApiResponse<List<UserSystemDTO>>.SuccessResponse(null, "Tất cả tài khoản đã được phê duyệt", 200));
+                return Ok(ApiResponse<List<UserSystemDTO>>.SuccessResponse(null, "Không có tài khoản nào cần phê duyệt", 200));
             }
             return Ok(ApiResponse<List<UserSystemDTO>>.SuccessResponse(result, "Success", StatusCodes.Status200OK));
         }
 
+        // Get rejected users
         [HttpGet("/api/commander/approvals/rejected")]
         public async Task<ActionResult<ApiResponse<List<UserSystemDTO>>>> GetRejected()
         {
@@ -153,6 +155,7 @@ namespace RescueSystem.Api.Controllers
             return Ok(ApiResponse<List<UserSystemDTO>>.SuccessResponse(result, "Success", StatusCodes.Status200OK));
         }
 
+        // Get all system users
         [HttpGet("/api/commander/users")]
         public async Task<ActionResult<ApiResponse<List<UserSystemDTO>>>> GetSystemUsers([FromQuery] string? search, [FromQuery] string? role)
         {
@@ -161,7 +164,7 @@ namespace RescueSystem.Api.Controllers
             return Ok(ApiResponse<List<UserSystemDTO>>.SuccessResponse(result, "Success", StatusCodes.Status200OK));
         }
 
-
+        // Approve user
         [HttpPost("/api/commander/approvals/{userId}")]
         public async Task<ActionResult<ApiResponse<object>>> ApproveUser([FromRoute] Guid userId)
         {
@@ -171,6 +174,7 @@ namespace RescueSystem.Api.Controllers
             return Ok(ApiResponse<object>.SuccessResponse(null, "Đã phê duyệt tài khoản thành công", 200));
         }
 
+        // Reject user
         [HttpPost("/api/commander/approvals/{userId}/reject")]
         public async Task<ActionResult<ApiResponse<object>>> RejectUser([FromRoute] Guid userId)
         {
@@ -180,6 +184,7 @@ namespace RescueSystem.Api.Controllers
             return Ok(ApiResponse<object>.SuccessResponse(null, "Đã từ chối tài khoản", 200));
         }
 
+        // Toggle user status
         [HttpPut("/api/commander/users/{userId}/status")]
         public async Task<ActionResult<ApiResponse<object>>> ToggleUserStatus(
             [FromRoute] Guid userId,

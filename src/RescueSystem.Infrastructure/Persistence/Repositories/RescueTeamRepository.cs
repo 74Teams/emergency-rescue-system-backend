@@ -127,7 +127,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
             var members = await _context.Users.Where(u => u.RescueTeamId == rescueTeam.Id).ToListAsync();
             foreach (var member in members)
             {
-                member.RescueTeamId = null; // Gỡ thành viên khỏi đội
+                member.RescueTeamId = null; 
             }
             _context.RescueTeams.Remove(rescueTeam);
 

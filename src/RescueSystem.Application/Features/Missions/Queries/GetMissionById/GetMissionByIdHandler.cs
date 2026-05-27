@@ -59,7 +59,7 @@ namespace RescueSystem.Application.Features.Missions.Queries.GetMissionById
                     Name = mission.Dispatcher.FullName,
                     Email = mission.Dispatcher.Email
                 },
-                Status = mission.Status.ToString(),
+                Status = mission.Request!.Status,
                 StartTime = mission.StartTime.AddHours(7),
                 EndTime = mission.EndTime.HasValue ? mission.EndTime.Value.AddHours(7) : null,
                 CreateAt = mission.CreatedAt.AddHours(7),

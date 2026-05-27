@@ -248,7 +248,6 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
                 newRoles = new List<string> { "Citizen" };
             }
 
-            // 2. Lấy danh sách Roles hiện tại trong Database
             var currentRoles = await _userManager.GetRolesAsync(user);
 
             var rolesToRemove = currentRoles.Except(newRoles).ToList();

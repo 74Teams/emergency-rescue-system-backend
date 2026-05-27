@@ -1,4 +1,5 @@
 ﻿using RescueSystem.Application.DTOs.Address;
+using RescueSystem.Application.DTOs.Contact;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +17,7 @@ namespace RescueSystem.Application.DTOs.Auth
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public AddressDTO? Address { get; set; }
+        public List<ContactDTO> Contacts { get; set; } = new();
         public IList<string> Roles { get; set; } = new List<string>();
     }
 }

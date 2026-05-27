@@ -6,6 +6,7 @@ using RescueSystem.Application.Common.Exception;
 using RescueSystem.Application.Common.Interfaces.Repositories;
 using RescueSystem.Application.DTOs.Address;
 using RescueSystem.Application.DTOs.Auth;
+using RescueSystem.Application.DTOs.Contact;
 using RescueSystem.Application.Interfaces.Respositories;
 
 namespace RescueSystem.Application.Features.Auth.Queries.Profile
@@ -14,11 +15,13 @@ namespace RescueSystem.Application.Features.Auth.Queries.Profile
     {
         private readonly IUserRepository _userRepository;
         private readonly IRescueTeamRepository _rescueTeamRepository;
+        private readonly IContactRepository _contactRepository;
 
-        public ProfileHandler(IUserRepository userRepository, IRescueTeamRepository rescueTeamRepository)
+        public ProfileHandler(IUserRepository userRepository, IRescueTeamRepository rescueTeamRepository, IContactRepository contactRepository)
         {
             _userRepository = userRepository;
             _rescueTeamRepository = rescueTeamRepository;
+            _contactRepository = contactRepository;
         }
         public async Task<ProfileResponse> Handle(ProfileQuery request, CancellationToken cancellationToken)
         {
@@ -29,21 +32,11 @@ namespace RescueSystem.Application.Features.Auth.Queries.Profile
             }
 
             var roles = await _userRepository.GetUserRolesAsync(foundUser);
-
             var address = await _userRepository.GetAddressByUserIdAsync(foundUser.Id);
-
-            string? teamName = null;
-            if (foundUser.RescueTeamId.HasValue)
-            {
-                var team = await _rescueTeamRepository.GetByIdAsync(foundUser.RescueTeamId.Value);
-                teamName = team?.TeamName;
-            }
-
+            var contacts = await _contactRepository.GetByUserIdAsync(foundUser.Id);
             return new ProfileResponse
             {
                 Id = foundUser.Id,
-                RescueTeamId = foundUser.RescueTeamId,
-                TeamName = teamName,
                 Fullname = foundUser.FullName,
                 Email = foundUser.Email ?? string.Empty,
                 PhoneNumber = foundUser.PhoneNumber ?? string.Empty,
@@ -54,6 +47,14 @@ namespace RescueSystem.Application.Features.Auth.Queries.Profile
                     District = address.District,
                     GPS = address.GPS
                 },
+                Contacts = contacts.Select(contact => new ContactDTO
+                {
+                    Id = contact.Id,
+                    Name = contact.Name,
+                    Relationship = contact.Relationship,
+                    PhoneNumber = contact.PhoneNumber,
+                    Email = contact.Email
+                }).ToList(),
                 Roles = roles
             };
         }

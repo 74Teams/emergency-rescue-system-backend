@@ -273,8 +273,6 @@ namespace RescueSystem.Api.Controllers
             });
         }
 
-        //Edit: Dieu, 17/05/2026 Them refreshToken
-        // post api/auth/refresh
         [HttpPost("refresh")]
         [SwaggerOperation(Summary = "Làm mới access token")]
         public async Task<ActionResult<object>> Refresh([FromBody] RefreshTokenCommand command)
@@ -283,13 +281,5 @@ namespace RescueSystem.Api.Controllers
             return ApiResponse<AuthResponse>.SuccessResponse(result, "Làm mới token thành công");
         }
 
-        //TODO: Them Logout
-        // [HttpPost("logout")]
-        // [Authorize]
-        // public async Task<ActionResult<object>> Logout([FromBody] LogoutCommand command)
-        // {
-        //     await _mediator.Send(command);
-        //     return ApiResponse<object>.SuccessResponse(null, "Đăng xuất thành công");
-        // }
     }
 }

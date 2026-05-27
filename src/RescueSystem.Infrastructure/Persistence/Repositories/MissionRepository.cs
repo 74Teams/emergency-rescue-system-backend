@@ -55,7 +55,6 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
 
         public async Task<IEnumerable<MissionHistory>> GetHistoriesByMissionIdAsync(Guid missionId)
         {
-            //EDIT: DIEU 18/05/2026 - Thêm AsNoTracking để tránh tracking entity khi chỉ cần đọc dữ liệu
             return await _context.MissionHistories
                 .AsNoTracking()
                 .Include(mh => mh.ChangedBy)
@@ -66,7 +65,6 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
 
         public async Task<Mission?> GetByIdAsync(Guid id)
         {
-            //EDIT: DIEU 18/05/2026 - Thêm AsNoTracking để tránh tracking entity khi chỉ cần đọc dữ liệu
             return await _context.Missions
             .AsNoTracking()
             .Include(x => x.Request)
@@ -80,7 +78,6 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
 
         public async Task<IEnumerable<Mission>> GetPagedAsync(int page, int pageSize)
         {
-            //EDIT: DIEU 18/05/2026 - Thêm AsNoTracking để tránh tracking entity khi chỉ cần đọc dữ liệu
             return await _context.Missions
                 .AsNoTracking()
                 .OrderByDescending(x => x.CreatedAt)
@@ -91,7 +88,6 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
 
         public async Task<IEnumerable<Mission>> GetByStatusAsync(MissionStatus status)
         {
-            //EDIT: DIEU 18/05/2026 - Thêm AsNoTracking để tránh tracking entity khi chỉ cần đọc dữ liệu
             return await _context.Missions
                 .AsNoTracking()
                 .Where(x => x.Status == status)
@@ -102,6 +98,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
         public IQueryable<Mission> Query()
         {
             return _context.Missions
+                .Include(x => x.Request)
                 .Include(x => x.RescueTeam)
                 .Include(x => x.Dispatcher)
                 .AsQueryable();
@@ -109,7 +106,6 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
 
         public async Task<Mission?> GetByRequestAndTeamAsync(Guid requestId, Guid rescueTeamId)
         {
-            //EDIT: DIEU 18/05/2026 - Thêm AsNoTracking để tránh tracking entity khi chỉ cần đọc dữ liệu
             return await _context.Missions
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.RequestId == requestId && x.RescueTeamId == rescueTeamId);
@@ -117,7 +113,6 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
 
         public async Task<Mission?> GetActiveMissionByTeamIdAsync(Guid rescueTeamId)
         {
-            //EDIT: DIEU 18/05/2026 - Thêm AsNoTracking để tránh tracking entity khi chỉ cần đọc dữ liệu
             return await _context.Missions
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.RescueTeamId == rescueTeamId

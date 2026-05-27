@@ -9,6 +9,7 @@ using RescueSystem.Application.DTOs.Mission;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Application.DTOs.RescueTeam;
 using RescueSystem.Application.DTOs.Commander;
+using RescueSystem.Domain.Enums;
 
 namespace RescueSystem.Application.Common.Mappings;
 
@@ -27,7 +28,8 @@ public class MappingProfile : Profile
         CreateMap<MissionHistory, MissionHistoryDTO>();
 
         CreateMap<Mission, RequestDTO.MissionBriefDto>()
-            .ForMember(dest => dest.TeamName, opt => opt.MapFrom(src => src.RescueTeam != null ? src.RescueTeam.TeamName : string.Empty));
+            .ForMember(dest => dest.TeamName, opt => opt.MapFrom(src => src.RescueTeam != null ? src.RescueTeam.TeamName : string.Empty))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Request != null ? src.Request.Status : RequestStatus.PENDING));
 
         CreateMap<RescueTeam, RescueTeamDTO>()
             .ForMember(dest => dest.Leader, opt => opt.MapFrom(src => src.TeamLeader))

@@ -114,25 +114,6 @@ namespace RescueSystem.Api.Controllers
             return Ok(ApiResponse<object>.SuccessResponse(null, "Xóa thành viên khỏi đội thành công", StatusCodes.Status200OK));
         }
 
-        // DELETE : api/RescueTeam/{teamId}/member/{memberId}
-        [HttpDelete("{teamId}/member/{memberId}")]
-        [SwaggerOperation(
-            Summary = "Remove member from rescue team",
-            Description = "Xóa thành viên khỏi đội cứu hộ"
-        )]
-        [SwaggerResponse(200, "Member removed successfully")]
-        [SwaggerResponse(404, "Rescue team or member not found")]
-        [SwaggerResponse(500, "Internal server error")]
-        public async Task<ActionResult<object>> RemoveMemberFromTeam([FromRoute] Guid teamId, [FromRoute] Guid memberId)
-        {
-            var command = new RemoveMemberFromRescueTeamCommand
-            {
-                TeamId = teamId,
-                MemberId = memberId
-            };
-
-            await mediator.Send(command);
-
         [HttpDelete("{teamId:guid}")]
         [SwaggerOperation(Summary = "Delete a rescue team", Description = "Giải thể hoặc xóa thông tin đội cứu hộ khỏi hệ thống (Khuyên dùng Soft Delete)")]
         [SwaggerResponse(StatusCodes.Status200OK, "Giải thể thành công", typeof(ApiResponse<object>))]
