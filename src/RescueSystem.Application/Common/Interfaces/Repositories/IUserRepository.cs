@@ -1,13 +1,10 @@
-﻿using RescueSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using RescueSystem.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using RescueSystem.Application.DTOs.User;
 using RescueSystem.Application.DTOs.Commander;
 using RescueSystem.Application.DTOs.Common;
 
-namespace RescueSystem.Application.Interfaces.Respositories
+namespace RescueSystem.Infrastructure.Common.Interfaces.Repositories
 {
     public interface IUserRepository
     {

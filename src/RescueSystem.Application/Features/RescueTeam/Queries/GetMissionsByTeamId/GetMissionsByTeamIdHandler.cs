@@ -1,5 +1,5 @@
 using MediatR;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.DTOs.Mission;
 using RescueSystem.Application.DTOs.RescueTeam;
 using RescueSystem.Application.DTOs.User;

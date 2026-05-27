@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.Common.Models;
 using RescueSystem.Application.DTOs.Mission;
 using RescueSystem.Application.DTOs.RescueTeam;

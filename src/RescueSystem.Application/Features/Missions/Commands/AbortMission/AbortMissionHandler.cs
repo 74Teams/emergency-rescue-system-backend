@@ -1,5 +1,5 @@
-﻿using MediatR;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using MediatR;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Domain.Enums;
 using System;
@@ -11,10 +11,17 @@ namespace RescueSystem.Application.Features.Missions.Commands.AbortMission
     public class AbortMissionHandler : IRequestHandler<AbortMissionCommand, bool>
     {
         private readonly IMissionRepository _missionRepository;
+        private readonly IRequestRespository _requestRepository;
+        private readonly IRescueTeamRepository _rescueTeamRepository;
 
-        public AbortMissionHandler(IMissionRepository missionRepository)
+        public AbortMissionHandler(
+            IMissionRepository missionRepository,
+            IRequestRespository requestRepository,
+            IRescueTeamRepository rescueTeamRepository)
         {
             _missionRepository = missionRepository;
+            _requestRepository = requestRepository;
+            _rescueTeamRepository = rescueTeamRepository;
         }
 
         public async Task<bool> Handle(AbortMissionCommand request, CancellationToken cancellationToken)
@@ -48,6 +55,17 @@ namespace RescueSystem.Application.Features.Missions.Commands.AbortMission
 
             await _missionRepository.UpdateAsync(mission);
             await _missionRepository.AddHistoryAsync(history);
+
+            // Update Request and Team status on abort
+            await _requestRepository.UpdateStatusAsync(mission.RequestId, RequestStatus.CANCELED);
+
+            var team = await _rescueTeamRepository.GetByIdAsync(mission.RescueTeamId);
+            if (team != null)
+            {
+                team.Status = TeamStatus.AVAILABLE;
+                team.UpdatedAt = DateTime.UtcNow.AddHours(7);
+                await _rescueTeamRepository.UpdateTeamStatusAsync(team.Id, TeamStatus.AVAILABLE);
+            }
 
             return true;
         }

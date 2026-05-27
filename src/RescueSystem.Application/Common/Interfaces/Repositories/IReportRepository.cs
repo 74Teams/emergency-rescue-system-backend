@@ -1,6 +1,6 @@
 using RescueSystem.Application.DTOs.Report;
 
-namespace RescueSystem.Application.Common.Interfaces.Repositories
+namespace RescueSystem.Infrastructure.Common.Interfaces.Repositories
 {
     public interface IReportRepository
     {

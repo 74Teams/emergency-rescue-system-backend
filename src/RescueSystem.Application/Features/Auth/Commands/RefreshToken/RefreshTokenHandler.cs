@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using RescueSystem.Application.Common.Exception;
 using RescueSystem.Application.Common.Interfaces.Services;
 using RescueSystem.Application.DTOs.Auth;
-using RescueSystem.Application.Interfaces.Respositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 
 namespace RescueSystem.Application.Features.Auth.Commands.RefreshToken;
 

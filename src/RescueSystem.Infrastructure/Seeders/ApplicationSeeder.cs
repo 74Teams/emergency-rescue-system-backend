@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Domain.Enums;
 using RescueSystem.Infrastructure.Persistence;
 
-namespace RescueSystem.Api.Seeders
+namespace RescueSystem.Infrastructure.Seeders
 {
     public static class ApplicationSeeder
     {

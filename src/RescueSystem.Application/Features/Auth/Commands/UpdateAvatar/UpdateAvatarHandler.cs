@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using RescueSystem.Application.Common.Interfaces.Services;
 using RescueSystem.Application.DTOs.Avatar;
-using RescueSystem.Application.Interfaces.Respositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;

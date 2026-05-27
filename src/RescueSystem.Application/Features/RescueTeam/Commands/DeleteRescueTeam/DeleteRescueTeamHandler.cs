@@ -1,6 +1,5 @@
 using MediatR;
-using RescueSystem.Application.Common.Interfaces.Repositories;
-using RescueSystem.Application.Interfaces.Respositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using System.Linq;
 
 namespace RescueSystem.Application.Features.RescueTeam.Commands.DeleteRescueTeam

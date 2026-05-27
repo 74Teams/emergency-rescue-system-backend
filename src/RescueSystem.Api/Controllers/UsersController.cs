@@ -87,20 +87,10 @@ namespace RescueSystem.Api.Controllers
 
             if (result)
             {
-                return Ok(new
-                {
-                    status = 200,
-                    success = true,
-                    message = "Cập nhật thông tin người dùng thành công."
-                });
+                return Ok(ApiResponse<object>.SuccessResponse(null, "Cập nhật thông tin người dùng thành công.", StatusCodes.Status200OK));
             }
 
-            return NotFound(new
-            {
-                status = 404,
-                success = false,
-                message = $"Không tìm thấy người dùng có ID: {id}"
-            });
+            return NotFound(ApiResponse<object>.ErrorResponse($"Không tìm thấy người dùng có ID: {id}", StatusCodes.Status404NotFound));
         }
 
         // DELETE api/users/{id} - Delete user by id
@@ -112,20 +102,10 @@ namespace RescueSystem.Api.Controllers
 
             if (result)
             {
-                return Ok(new
-                {
-                    status = 200,
-                    success = true,
-                    message = "Đã xóa người dùng thành công."
-                });
+                return Ok(ApiResponse<object>.SuccessResponse(null, "Đã xóa người dùng thành công.", StatusCodes.Status200OK));
             }
 
-            return NotFound(new
-            {
-                status = 404,
-                success = false,
-                message = "Không tìm thấy người dùng để xóa."
-            });
+            return NotFound(ApiResponse<object>.ErrorResponse("Không tìm thấy người dùng để xóa.", StatusCodes.Status404NotFound));
 
         }
 

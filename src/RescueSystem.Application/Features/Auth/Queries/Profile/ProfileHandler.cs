@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using MediatR;
 using RescueSystem.Application.Common.Exception;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.DTOs.Address;
 using RescueSystem.Application.DTOs.Auth;
 using RescueSystem.Application.DTOs.Contact;
-using RescueSystem.Application.Interfaces.Respositories;
 
 namespace RescueSystem.Application.Features.Auth.Queries.Profile
 {

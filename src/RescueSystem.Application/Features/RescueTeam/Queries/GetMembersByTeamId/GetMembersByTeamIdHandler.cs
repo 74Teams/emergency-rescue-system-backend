@@ -1,5 +1,5 @@
 using MediatR;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.DTOs.RescueTeam;
 
 namespace RescueSystem.Application.Features.RescueTeam.Queries.GetMembersByTeamId
@@ -15,7 +15,7 @@ namespace RescueSystem.Application.Features.RescueTeam.Queries.GetMembersByTeamI
 
         public async Task<List<RescueTeamMemberDTO>> Handle(GetMembersByTeamIdQuery request, CancellationToken cancellationToken)
         {
-            
+
             var members = await _rescueTeamRepository.GetMembersByTeamIdAsync(request.TeamId);
             return members.Select(m => new RescueTeamMemberDTO
             {

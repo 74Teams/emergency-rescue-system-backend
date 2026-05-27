@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using RescueSystem.Application.Interfaces.Respositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 
 namespace RescueSystem.Application.Features.User.Commands.DeleteUser
 {

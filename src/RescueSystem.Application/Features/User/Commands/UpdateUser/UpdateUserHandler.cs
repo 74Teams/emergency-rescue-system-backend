@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using RescueSystem.Application.Interfaces.Respositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.Common.Exception;
 using System;
 using System.Collections.Generic;

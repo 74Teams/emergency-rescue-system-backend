@@ -1,6 +1,6 @@
-﻿using MediatR;
+using MediatR;
 using RescueSystem.Application.Common.Exception;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Domain.Enums;
 using System;
@@ -14,7 +14,6 @@ namespace RescueSystem.Application.Features.Missions.Commands.CreateMission
     public class CreateMissionHandler : IRequestHandler<CreateMissionCommand, Guid>
     {
         private readonly IMissionRepository _missionRepository;
-        //FIXED: DIEU 18/05/2026 - Thêm repository để thay đổi trạng thái của Rescuer khi mà gán nhiệm vụ 
         private readonly IRescueTeamRepository _rescueTeamRepository; // FIXED: Added
 
         public CreateMissionHandler(IMissionRepository missionRepository, IRescueTeamRepository rescueTeamRepository)
@@ -54,14 +53,17 @@ namespace RescueSystem.Application.Features.Missions.Commands.CreateMission
             };
 
             var res = await _missionRepository.AddAsync(mission);
-            var team = await _rescueTeamRepository.GetByIdAsync(request.RescueTeamId);
-            if (team != null)
+
+            var history = new MissionHistory
             {
-                team.Status = TeamStatus.ON_MISSION;
-                team.UpdatedAt = DateTime.UtcNow.AddHours(7);
-                //TODO: CHECK thay cai null thanh description
-                await _rescueTeamRepository.UpdateTeamStatusAsync(team.Id, TeamStatus.ON_MISSION);
-            }
+                MissionId = mission.Id,
+                FromStatus = null,
+                ToStatus = mission.Status,
+                ChangedById = request.DispatcherId,
+                Note = "Dispatcher created mission",
+                CreatedAt = DateTime.UtcNow.AddHours(7)
+            };
+            await _missionRepository.AddHistoryAsync(history);
 
             return mission.Id;
         }

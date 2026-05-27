@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RescueSystem.Application.Common.Exception;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Domain.Enums;
 using System;

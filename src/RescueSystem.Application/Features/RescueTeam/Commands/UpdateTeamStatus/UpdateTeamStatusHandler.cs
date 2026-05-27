@@ -1,5 +1,5 @@
 using MediatR;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 
 namespace RescueSystem.Application.Features.RescueTeam.Commands.UpdateTeamStatus
 {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using RescueSystem.Application.DTOs.Common;
 using RescueSystem.Application.DTOs.User;
-using RescueSystem.Application.Interfaces.Respositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 
 namespace RescueSystem.Application.Features.User.Queries.GetAllUser
 {

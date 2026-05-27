@@ -1,9 +1,6 @@
-﻿using RescueSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using RescueSystem.Domain.Entities;
 
-namespace RescueSystem.Application.Common.Interfaces.Repositories
+namespace RescueSystem.Infrastructure.Common.Interfaces.Repositories
 {
     public interface IRoleRepository
     {

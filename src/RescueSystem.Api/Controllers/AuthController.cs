@@ -55,7 +55,7 @@ namespace RescueSystem.Api.Controllers
         public async Task<ActionResult<object>> Login([FromBody] LoginCommand command)
         {
             var result = await _mediator.Send(command);
-            return ApiResponse<AuthResponse>.SuccessResponse(result, "Đăng nhập thành công");
+            return Ok(ApiResponse<AuthResponse>.SuccessResponse(result, "Đăng nhập thành công", StatusCodes.Status200OK));
         }
 
         // Get api/auth/profile
@@ -76,7 +76,7 @@ namespace RescueSystem.Api.Controllers
                 UserId = userId,
             };
             var response = await _mediator.Send(query);
-            return ApiResponse<ProfileResponse>.SuccessResponse(response, "Lấy thông tin người dùng thành công");
+            return Ok(ApiResponse<ProfileResponse>.SuccessResponse(response, "Lấy thông tin người dùng thành công", StatusCodes.Status200OK));
         }
 
         // Post api/auth/forgot-password
@@ -84,12 +84,7 @@ namespace RescueSystem.Api.Controllers
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(null, result, StatusCodes.Status200OK));
         }
 
         // Post api/auth/reset-password
@@ -97,12 +92,7 @@ namespace RescueSystem.Api.Controllers
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(null, result, StatusCodes.Status200OK));
         }
 
         // Put api/auth/profile
@@ -117,12 +107,7 @@ namespace RescueSystem.Api.Controllers
             }
 
             var result = await _mediator.Send(command);
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(null, result, StatusCodes.Status200OK));
         }
 
         //  Post api/auth/avatar
@@ -138,13 +123,7 @@ namespace RescueSystem.Api.Controllers
 
             var result = await _mediator.Send(command);
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Upload avatar success",
-                data = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(result, "Upload avatar success", StatusCodes.Status200OK));
         }
 
         // Post api/auth/contact/{id}
@@ -156,20 +135,14 @@ namespace RescueSystem.Api.Controllers
 
             if (!Guid.TryParse(userIdClaim, out var userId))
             {
-                return Unauthorized("UserId không hợp lệ");
+                return Unauthorized(ApiResponse<object>.ErrorResponse("UserId không hợp lệ", StatusCodes.Status401Unauthorized));
             }
 
             command.UserId = userId;
 
             var result = await _mediator.Send(command);
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Tao contact thanh cong",
-                data = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(result, "Tao contact thanh cong", StatusCodes.Status200OK));
         }
 
         // Put api/auth/contact/{id}
@@ -180,24 +153,17 @@ namespace RescueSystem.Api.Controllers
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (!Guid.TryParse(userIdClaim, out var userId))
-                return Unauthorized();
+                return Unauthorized(ApiResponse<object>.ErrorResponse("UserId không hợp lệ", StatusCodes.Status401Unauthorized));
 
             command.Id = id;
             command.UserId = userId;
 
             var result = await _mediator.Send(command);
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Cap nhat thong tin thanh cong",
-                data = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(result, "Cap nhat thong tin thanh cong", StatusCodes.Status200OK));
         }
 
         // Delete api/auth/contact/{id}
-
         [Authorize]
         [HttpDelete("contact/{id}")]
         public async Task<IActionResult> Delete(Guid id)
@@ -205,7 +171,7 @@ namespace RescueSystem.Api.Controllers
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (!Guid.TryParse(userIdClaim, out var userId))
-                return Unauthorized();
+                return Unauthorized(ApiResponse<object>.ErrorResponse("UserId không hợp lệ", StatusCodes.Status401Unauthorized));
 
             var command = new DeleteContactCommand
             {
@@ -215,12 +181,7 @@ namespace RescueSystem.Api.Controllers
 
             var result = await _mediator.Send(command);
 
-            return Ok(new
-            {
-                success = result,
-                statusCode = 200,
-                message = "Xoa thanh cong"
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(new { Deleted = result }, "Xoa thanh cong", StatusCodes.Status200OK));
         }
 
         // Get api/auth/contact/{id}
@@ -231,7 +192,7 @@ namespace RescueSystem.Api.Controllers
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (!Guid.TryParse(userIdClaim, out var userId))
-                return Unauthorized();
+                return Unauthorized(ApiResponse<object>.ErrorResponse("UserId không hợp lệ", StatusCodes.Status401Unauthorized));
 
             var query = new GetContactDetailQuery
             {
@@ -241,13 +202,7 @@ namespace RescueSystem.Api.Controllers
 
             var result = await _mediator.Send(query);
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Lay thong tin thanh cong",
-                data = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(result, "Lay thong tin thanh cong", StatusCodes.Status200OK));
         }
 
         // Get api/auth/contact
@@ -258,27 +213,22 @@ namespace RescueSystem.Api.Controllers
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (!Guid.TryParse(userIdClaim, out var userId))
-                return Unauthorized();
+                return Unauthorized(ApiResponse<object>.ErrorResponse("UserId không hợp lệ", StatusCodes.Status401Unauthorized));
 
             var query = new GetAllContactQuery { UserId = userId };
 
             var result = await _mediator.Send(query);
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Lay thong tin thanh cong",
-                data = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(result, "Lay thong tin thanh cong", StatusCodes.Status200OK));
         }
 
+        // Post api/auth/refresh
         [HttpPost("refresh")]
         [SwaggerOperation(Summary = "Làm mới access token")]
         public async Task<ActionResult<object>> Refresh([FromBody] RefreshTokenCommand command)
         {
             var result = await _mediator.Send(command);
-            return ApiResponse<AuthResponse>.SuccessResponse(result, "Làm mới token thành công");
+            return Ok(ApiResponse<AuthResponse>.SuccessResponse(result, "Làm mới token thành công", StatusCodes.Status200OK));
         }
 
     }

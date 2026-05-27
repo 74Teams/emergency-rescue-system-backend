@@ -1,5 +1,5 @@
-﻿using MediatR;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using MediatR;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Domain.Enums;
 using System;
@@ -11,13 +11,17 @@ namespace RescueSystem.Application.Features.Missions.Commands.FinishMission
     public class FinishMissionCommandHandler : IRequestHandler<FinishMissionCommand, bool>
     {
         private readonly IMissionRepository _missionRepository;
-
         private readonly IRescueTeamRepository _rescueTeamRepository;
+        private readonly IRequestRespository _requestRepository;
 
-        public FinishMissionCommandHandler(IMissionRepository missionRepository, IRescueTeamRepository rescueTeamRepository)
+        public FinishMissionCommandHandler(
+            IMissionRepository missionRepository, 
+            IRescueTeamRepository rescueTeamRepository,
+            IRequestRespository requestRepository)
         {
             _missionRepository = missionRepository;
             _rescueTeamRepository = rescueTeamRepository;
+            _requestRepository = requestRepository;
         }
         public async Task<bool> Handle(FinishMissionCommand request, CancellationToken cancellationToken)
         {
@@ -56,9 +60,10 @@ namespace RescueSystem.Application.Features.Missions.Commands.FinishMission
             {
                 team.Status = TeamStatus.AVAILABLE;
                 team.UpdatedAt = DateTime.UtcNow.AddHours(7);
-                //TODO: CHECK cai null kia xu li sao 
                 await _rescueTeamRepository.UpdateTeamStatusAsync(team.Id, TeamStatus.AVAILABLE);
             }
+
+            await _requestRepository.UpdateStatusAsync(mission.RequestId, RequestStatus.COMPLETED);
 
             return true;
         }

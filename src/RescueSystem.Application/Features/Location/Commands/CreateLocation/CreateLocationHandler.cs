@@ -1,6 +1,6 @@
 using AutoMapper;
 using MediatR;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.DTOs.Location;
 using LocationEntity = RescueSystem.Domain.Entities.Location;
 

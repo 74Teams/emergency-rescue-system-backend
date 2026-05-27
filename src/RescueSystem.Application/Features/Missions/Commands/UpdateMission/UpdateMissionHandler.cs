@@ -1,5 +1,5 @@
-﻿// using MediatR;
-// using RescueSystem.Application.Common.Interfaces.Repositories;
+// using MediatR;
+// using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 // using System;
 // using System.Collections.Generic;
 // using System.Text;
@@ -102,21 +102,29 @@
 //EDIT: DIEU 18/05/2026 - Cập nhật lại logic cho phép hủy nhiệm vụ từ bất kỳ trạng thái nào, nhưng vẫn giữ nguyên quy tắc chuyển trạng thái bình thường cho các trạng thái khác
 
 using MediatR;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
+using RescueSystem.Domain.Entities;
+using RescueSystem.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using RescueSystem.Domain.Entities;
-using RescueSystem.Domain.Enums;
 
 namespace RescueSystem.Application.Features.Missions.Commands.UpdateMission
 {
     public class UpdateMissionHandler : IRequestHandler<UpdateMissionCommand, bool>
     {
         private readonly IMissionRepository _missionRepository;
-        public UpdateMissionHandler(IMissionRepository missionRepository)
+        private readonly IRequestRespository _requestRepository;
+        private readonly IRescueTeamRepository _rescueTeamRepository;
+
+        public UpdateMissionHandler(
+            IMissionRepository missionRepository,
+            IRequestRespository requestRepository,
+            IRescueTeamRepository rescueTeamRepository)
         {
             _missionRepository = missionRepository;
+            _requestRepository = requestRepository;
+            _rescueTeamRepository = rescueTeamRepository;
         }
 
         public async Task<bool> Handle(UpdateMissionCommand request, CancellationToken cancellationToken)
@@ -182,6 +190,20 @@ namespace RescueSystem.Application.Features.Missions.Commands.UpdateMission
 
             await _missionRepository.UpdateAsync(mission);
             await _missionRepository.AddHistoryAsync(history);
+
+            // Phase 4: Rescue Team accepts mission
+            if (previousStatus == MissionStatus.ASSIGNED && request.Status == MissionStatus.EN_ROUTE)
+            {
+                await _requestRepository.UpdateStatusAsync(mission.RequestId, RequestStatus.IN_PROGRESS);
+                
+                var team = await _rescueTeamRepository.GetByIdAsync(mission.RescueTeamId);
+                if (team != null)
+                {
+                    team.Status = TeamStatus.ON_MISSION;
+                    team.UpdatedAt = DateTime.UtcNow.AddHours(7);
+                    await _rescueTeamRepository.UpdateTeamStatusAsync(team.Id, TeamStatus.ON_MISSION);
+                }
+            }
 
             return true;
         }

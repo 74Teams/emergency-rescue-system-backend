@@ -1,7 +1,7 @@
 using AutoMapper;
 using MediatR;
 using RescueSystem.Application.Common.Exception;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.DTOs.RescueTeam;
 
 namespace RescueSystem.Application.Features.RescueTeam.Queries.GetRescueTeamById

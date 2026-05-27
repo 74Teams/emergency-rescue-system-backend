@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 
 namespace RescueSystem.Infrastructure.Persistence.Repositories

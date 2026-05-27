@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RescueSystem.Application.Common.Response;
 using RescueSystem.Application.Features.Checklist.Commands.CreateChecklist;
 using RescueSystem.Application.Features.Checklist.Commands.DeleteChecklist;
 using RescueSystem.Application.Features.Checklist.Commands.UpdateChecklist;
@@ -26,42 +27,37 @@ namespace RescueSystem.Api.Controllers
         }
 
         // POST api/checklist
-
-        [Authorize(Roles = "Dispatcher,Admin")]
+        [Authorize(Roles = "Rescuer")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateChecklistCommand command)
         {
             var id = await _mediator.Send(command);
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Tạo checklist thành công.",
-                id = id
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(
+                data: new { Id = id },
+                message: "Tạo checklist thành công.",
+                statusCode: StatusCodes.Status200OK
+            ));
         }
 
         // GET api/checklist
 
-        [Authorize(Roles = "Dispatcher,Rescuer,Admin")]
+        [Authorize(Roles = "Dispatcher,Rescuer,Commander")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var result = await _mediator.Send(new GetAllChecklistsQuery());
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Checklists đã được truy xuất thành công.",
-                data = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(
+                data: result,
+                message: "Checklists đã được truy xuất thành công.",
+                statusCode: StatusCodes.Status200OK
+            ));
         }
 
         // GET api/checklist/{id} - join checklist items
 
-        [Authorize(Roles = "Dispatcher,Rescuer,Admin")]
+        [Authorize(Roles = "Dispatcher,Rescuer,Commander")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -71,18 +67,16 @@ namespace RescueSystem.Api.Controllers
                     Id = id
                 });
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Chi tiết checklist đã được lấy thành công.",
-                data = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(
+                data: result,
+                message: "Chi tiết checklist đã được lấy thành công.",
+                statusCode: StatusCodes.Status200OK
+            ));
         }
 
         // POST /api/checklist/{checklistId}/items
 
-        [Authorize(Roles = "Dispatcher,Admin")]
+        [Authorize(Roles = "Dispatcher,Commander")]
         [HttpPost("{checklistId}/items")]
         public async Task<IActionResult> CreateItem(Guid checklistId, CreateChecklistItemCommand command)
         {
@@ -90,18 +84,16 @@ namespace RescueSystem.Api.Controllers
 
             var result = await _mediator.Send(command);
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Tạo thành công checklist item",
-                id = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(
+                data: new { Id = result },
+                message: "Tạo thành công checklist item",
+                statusCode: StatusCodes.Status200OK
+            ));
         }
 
         //PUT /api/checklist/items/{id}
 
-        [Authorize(Roles = "Dispatcher,Rescuer,Admin")]
+        [Authorize(Roles = "Dispatcher,Rescuer,Commander")]
         [HttpPut("items/{id}")]
         public async Task<IActionResult> UpdateItem(Guid id, UpdateChecklistItemCommand command)
         {
@@ -109,33 +101,31 @@ namespace RescueSystem.Api.Controllers
 
             await _mediator.Send(command);
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Cập nhật thành công checklist item"
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(
+                data: null,
+                message: "Cập nhật thành công checklist item",
+                statusCode: StatusCodes.Status200OK
+            ));
         }
 
         // PUT api/checklist/{id}
 
-        [Authorize(Roles = "Dispatcher,Admin")]
+        [Authorize(Roles = "Dispatcher,Commander,Rescuer")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, UpdateChecklistCommand command)
         {
             command.Id = id;
             await _mediator.Send(command);
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Cập nhật thành công checklist"
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(
+                data: null,
+                message: "Cập nhật thành công checklist",
+                statusCode: StatusCodes.Status200OK
+            ));
         }
 
         // DELETE /api/checklist/items/{id}
 
-        [Authorize(Roles = "Dispatcher,Admin")]
+        [Authorize(Roles = "Dispatcher,Commander,Rescuer")]
         [HttpDelete("items/{id}")]
         public async Task<IActionResult> DeleteItem(Guid id)
         {
@@ -145,17 +135,16 @@ namespace RescueSystem.Api.Controllers
                     Id = id
                 });
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Xóa thành công checklist item"
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(
+                data: null,
+                message: "Xóa thành công checklist item",
+                statusCode: StatusCodes.Status200OK
+            ));
         }
 
         // GET /api/checklist/{id}/items
 
-        [Authorize(Roles = "Dispatcher,Rescuer,Admin")]
+        [Authorize(Roles = "Dispatcher,Rescuer,Commander")]
         [HttpGet("{id}/items")]
         public async Task<IActionResult> GetItems(Guid id)
         {
@@ -165,13 +154,11 @@ namespace RescueSystem.Api.Controllers
                     ChecklistId = id
                 });
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Checklist items đã được lấy thành công",
-                data = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(
+                data: result,
+                message: "Checklist items đã được lấy thành công",
+                statusCode: StatusCodes.Status200OK
+            ));
         }
 
         // GET /api/checklist/items/{id}
@@ -185,13 +172,11 @@ namespace RescueSystem.Api.Controllers
                 {
                     Id = id
                 });
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Checklist item đã được lấy thành công",
-                data = result
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(
+                data: result,
+                message: "Checklist item đã được lấy thành công",
+                statusCode: StatusCodes.Status200OK
+            ));
         }
 
         // DELETE api/checklist/{id}
@@ -206,12 +191,11 @@ namespace RescueSystem.Api.Controllers
                     Id = id
                 });
 
-            return Ok(new
-            {
-                success = true,
-                statusCode = 200,
-                message = "Xóa thành công checklist"
-            });
+            return Ok(ApiResponse<object>.SuccessResponse(
+                data: null,
+                message: "Xóa thành công checklist",
+                statusCode: StatusCodes.Status200OK
+            ));
         }
     }
 }

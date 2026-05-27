@@ -1,4 +1,4 @@
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -127,7 +127,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
             var members = await _context.Users.Where(u => u.RescueTeamId == rescueTeam.Id).ToListAsync();
             foreach (var member in members)
             {
-                member.RescueTeamId = null; 
+                member.RescueTeamId = null;
             }
             _context.RescueTeams.Remove(rescueTeam);
 

@@ -1,7 +1,6 @@
-﻿using MediatR;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using MediatR;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.Features.User.Commands;
-using RescueSystem.Application.Interfaces.Respositories;
 using RescueSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;

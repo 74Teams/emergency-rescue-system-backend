@@ -1,6 +1,6 @@
 using RescueSystem.Domain.Entities;
 
-namespace RescueSystem.Application.Common.Interfaces.Repositories
+namespace RescueSystem.Infrastructure.Common.Interfaces.Repositories
 {
     public interface ILocationRepository
     {

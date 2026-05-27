@@ -1,6 +1,6 @@
 using MediatR;
 using RescueSystem.Application.Common.Exception;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 
 namespace RescueSystem.Application.Features.Request.Commands.DeleteRequest

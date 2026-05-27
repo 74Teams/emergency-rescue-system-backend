@@ -1,10 +1,7 @@
-﻿using RescueSystem.Domain.Entities;
+using RescueSystem.Domain.Entities;
 using RescueSystem.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace RescueSystem.Application.Common.Interfaces.Repositories
+namespace RescueSystem.Infrastructure.Common.Interfaces.Repositories
 {
     public interface IMissionRepository
     {

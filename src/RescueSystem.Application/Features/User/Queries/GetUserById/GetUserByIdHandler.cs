@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using RescueSystem.Application.Common.Exception;
 using RescueSystem.Application.DTOs.User;
-using RescueSystem.Application.Interfaces.Respositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;

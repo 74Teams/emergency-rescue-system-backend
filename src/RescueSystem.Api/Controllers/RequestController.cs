@@ -70,6 +70,7 @@ namespace RescueSystem.Api.Controllers
         }
 
         // PUT api/requests/{id} - Update a rescue request
+        [Authorize(Roles = "Dispatcher,Commander")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRequest(Guid id, [FromForm] UpdateRequestCommand command)
         {

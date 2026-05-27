@@ -1,7 +1,7 @@
 using MediatR;
 using RescueSystem.Application.DTOs.Commander;
 using RescueSystem.Application.DTOs.User;
-using RescueSystem.Application.Interfaces.Respositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;

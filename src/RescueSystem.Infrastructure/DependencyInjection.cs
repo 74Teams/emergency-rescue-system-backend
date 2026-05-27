@@ -1,12 +1,11 @@
-﻿using Autofac.Core;
+using Autofac.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RescueSystem.Application.Common.ExternalSettings;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.Common.Interfaces.Services;
-using RescueSystem.Application.Interfaces.Respositories;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Infrastructure.Persistence;
 using RescueSystem.Infrastructure.Persistence.Repositories;

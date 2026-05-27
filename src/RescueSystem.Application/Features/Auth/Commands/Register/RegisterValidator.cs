@@ -42,9 +42,9 @@ namespace RescueSystem.Application.Features.Auth.Commands.Register
                 .WithMessage("Avatar phải là URL hợp lệ");
 
             RuleFor(x => x.Role)
-                .Must(r => string.IsNullOrWhiteSpace(r) || 
-                           r.Equals("Citizen", StringComparison.OrdinalIgnoreCase) || 
-                           r.Equals("Rescuer", StringComparison.OrdinalIgnoreCase) || 
+                .Must(r => string.IsNullOrWhiteSpace(r) ||
+                           r.Equals("Citizen", StringComparison.OrdinalIgnoreCase) ||
+                           r.Equals("Rescuer", StringComparison.OrdinalIgnoreCase) ||
                            r.Equals("Dispatcher", StringComparison.OrdinalIgnoreCase))
                 .WithMessage("Vai trò không hợp lệ. Chỉ chấp nhận Citizen, Rescuer, hoặc Dispatcher.");
         }

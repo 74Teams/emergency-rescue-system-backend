@@ -1,8 +1,8 @@
-﻿using RescueSystem.Application.DTOs.Common;
+using RescueSystem.Application.DTOs.Common;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Domain.Enums;
 
-namespace RescueSystem.Application.Common.Interfaces.Repositories
+namespace RescueSystem.Infrastructure.Common.Interfaces.Repositories
 {
     public interface IRequestRespository
     {

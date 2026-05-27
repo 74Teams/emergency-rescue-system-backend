@@ -1,8 +1,7 @@
-
 using MediatR;
 using RescueSystem.Application.Common.Exception;
-using RescueSystem.Application.Common.Interfaces.Repositories;
-using RescueSystem.Application.Interfaces.Respositories;
+using RescueSystem.Application.Common.Exception;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 
 namespace RescueSystem.Application.Features.RescueTeam.Commands.RemoveMemberFromRescueTeam
 {

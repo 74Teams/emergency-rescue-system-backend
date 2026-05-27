@@ -4,9 +4,10 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
-using RescueSystem.Api.Seeders;
+using RescueSystem.Infrastructure.Seeders;
 using RescueSystem.Application;
 using RescueSystem.Infrastructure;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,19 +18,40 @@ builder.Services.AddOpenApi();
 
 // Add Swagger services
 builder.Services.AddSwaggerGen(c =>
-c.EnableAnnotations());
+{
+    c.EnableAnnotations();
+    var xmlFile = Path.Combine(AppContext.BaseDirectory, "RescueSystem.Api.xml");
+    if (File.Exists(xmlFile))
+    {
+        c.IncludeXmlComments(xmlFile, includeControllerXmlComments: true);
+    }
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = @"JWT Authorization header using the Bearer scheme. <br/>
+                      Enter 'Bearer' [space] and then your token in the text input below.<br/>
+                      Example: 'Bearer 12345abcdef'",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(document => new()
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
+    });
+});
 
 builder.Services.AddProblemDetails();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-// ✅ ADD CORS Configuration
 builder.Services.AddCors(options =>
 {
     if (builder.Environment.IsDevelopment())
     {
-        // Development: Allow all origins for easier testing
         options.AddPolicy("AllowAll", policy =>
         {
             policy.AllowAnyOrigin()
@@ -39,7 +61,6 @@ builder.Services.AddCors(options =>
     }
     else
     {
-        // Production: Allow specific origins only
         options.AddPolicy("AllowFrontend", policy =>
         {
             policy.WithOrigins("https://yourdomain.com", "https://www.yourdomain.com")
@@ -70,7 +91,6 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
     };
 
-    // Override OnChallenge để xử lý 401 Unauthorized
     options.Events = new JwtBearerEvents
     {
         OnChallenge = async context =>
@@ -149,25 +169,21 @@ using (var scope = app.Services.CreateScope())
     await ApplicationSeeder.SeedAsync(scope.ServiceProvider, logger);
 }
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 
-    // Enable Swagger UI
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rescue System API v1");
-        c.RoutePrefix = string.Empty; // Serve Swagger UI at root
+        c.RoutePrefix = string.Empty;
     });
 
 }
 
-// Register global exception middleware early in the pipeline
 app.UseMiddleware<RescueSystem.Api.Middlewares.GlobalExceptionMiddleware>();
 
-// ✅ USE CORS - Must be before UseAuthentication()
 app.UseCors(builder.Environment.IsDevelopment() ? "AllowAll" : "AllowFrontend");
 
 app.UseAuthentication();

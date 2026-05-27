@@ -1,11 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using RescueSystem.Application.Common.Interfaces.Repositories;
 using RescueSystem.Application.DTOs.RescueTeam;
 using RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam;
 using RescueSystem.Domain.Enums;
 using RescueSystem.Domain.Entities;
-using RescueSystem.Application.Interfaces.Respositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using System.Linq;
 
 namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
@@ -29,7 +28,7 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
             {
                 Id = teamId,
                 TeamName = request.TeamName,
-                Description = request.Description, 
+                Description = request.Description,
                 TeamLeaderId = request.TeamLeaderId,
                 BaseLocationId = request.BaseLocationId,
                 Status = TeamStatus.AVAILABLE

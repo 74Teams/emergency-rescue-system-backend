@@ -24,7 +24,7 @@ namespace RescueSystem.Api.Controllers
 {
     [ApiController]
     // Hợp nhất đường dẫn tường minh, tránh việc đổi tên Class làm gãy Route của Frontend
-    [Route("api/RescueTeam")] 
+    [Route("api/RescueTeam")]
     [Produces("application/json")] // Ép toàn bộ API trả về định dạng JSON chuẩn hóa
     public class RescueTeamController(IMediator mediator) : ControllerBase
     {

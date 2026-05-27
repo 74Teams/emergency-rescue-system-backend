@@ -1,10 +1,9 @@
-﻿using MediatR;
+using MediatR;
 using RescueSystem.Application.Common.Exception;
-using RescueSystem.Application.Common.Interfaces.Repositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.DTOs.Role;
 using RescueSystem.Application.DTOs.User;
 using RescueSystem.Application.Features.User.Queries.GetUserById;
-using RescueSystem.Application.Interfaces.Respositories;
 using System;
 using System.Collections.Generic;
 using System.Text;

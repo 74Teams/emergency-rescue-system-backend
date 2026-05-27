@@ -3,7 +3,7 @@ using RescueSystem.Application.Common.Enums;
 using RescueSystem.Application.Common.Exception;
 using RescueSystem.Application.Common.Interfaces.Services;
 using RescueSystem.Application.DTOs.Auth;
-using RescueSystem.Application.Interfaces.Respositories;
+using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 
 namespace RescueSystem.Application.Features.Auth.Commands.Register
@@ -27,7 +27,7 @@ namespace RescueSystem.Application.Features.Auth.Commands.Register
                 throw new BadRequestException("Email đã được sử dụng");
             }
 
-           
+
 
             var role = string.IsNullOrWhiteSpace(request.Role) ? RoleEnum.Citizen.ToString() : request.Role;
             var roles = new List<string> { role };
