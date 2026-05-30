@@ -9,11 +9,11 @@ namespace RescueSystem.Application.Features.Request.Commands.UpdateRequest
         public UpdateRequestValidator()
         {
             RuleFor(x => x.RequestId)
-                .NotEmpty().WithMessage("RequestId là bắt buộc");
+                .NotEmpty().WithMessage("Request gửi đi không hợp lệ");
 
             RuleFor(x => x.UserId)
                 .Must(id => !id.HasValue || id.Value != Guid.Empty)
-                .WithMessage("UserId không hợp lệ")
+                .WithMessage("Người gửi không hợp lệ")
                 .When(x => x.UserId.HasValue);
 
             RuleFor(x => x.EmergencyType)

@@ -8,14 +8,14 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
         public CreateRescueTeamValidator()
         {
             RuleFor(x => x.TeamName)
-                .NotEmpty().WithMessage("TeamName is required")
-                .MaximumLength(256).WithMessage("TeamNameF must not exceed 200 characters");
+                .NotEmpty().WithMessage("Cần có tên Đội cứu hộ")
+                .MaximumLength(256).WithMessage("Tên đội cứu hộ không vượt quá 256 kí tự");
 
             RuleFor(x => x.TeamLeaderId)
-                .NotEmpty().WithMessage("Team Leader is required");
+                .NotEmpty().WithMessage("Yêu cầu có một Team leader");
 
             RuleFor(x => x.BaseLocationId)
-                .NotEmpty().WithMessage("Base Loacation is required");
+                .NotEmpty().WithMessage("Cần có địa chỉ trụ sở");
         }
     }
 }

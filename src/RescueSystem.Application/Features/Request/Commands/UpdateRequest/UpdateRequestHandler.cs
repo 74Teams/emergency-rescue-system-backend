@@ -13,14 +13,16 @@ namespace RescueSystem.Application.Features.Request.Commands.UpdateRequest
     {
         private readonly IRequestRespository _requestRepository;
         private readonly ICloudinaryService _cloudinaryService;
+        private readonly ILocationRepository _locationRepository; //EDIT: 30/5 by Dieu
 
         private static readonly string[] AllowedImageTypes = { "image/jpeg", "image/png", "image/webp", "image/gif" };
         private static readonly string[] AllowedVideoTypes = { "video/mp4", "video/avi", "video/mov", "video/webm" };
 
-        public UpdateRequestHandler(IRequestRespository requestRepository, ICloudinaryService cloudinaryService)
+        public UpdateRequestHandler(IRequestRespository requestRepository, ICloudinaryService cloudinaryService, ILocationRepository locationRepository)
         {
             _requestRepository = requestRepository;
             _cloudinaryService = cloudinaryService;
+            _locationRepository = locationRepository;
         }
 
         public async Task<RescueRequest> Handle(UpdateRequestCommand request, CancellationToken cancellationToken)
@@ -29,6 +31,13 @@ namespace RescueSystem.Application.Features.Request.Commands.UpdateRequest
             if (existingRequest == null)
             {
                 throw new NotFoundException("Không tìm thấy yêu cầu cứu hộ");
+            }
+
+            //EDIT: 30/5 by Dieu - Kiểm tra LocationId
+            var location = await _locationRepository.GetByIdAsync(request.LocationId);
+            if (location == null)
+            {
+                throw new BadRequestException("Vị trí không hợp lệ");
             }
 
             var files = request.Files == null ? new List<IFormFile>() : request.Files;
@@ -53,6 +62,19 @@ namespace RescueSystem.Application.Features.Request.Commands.UpdateRequest
 
             if (files.Count > 0)
             {
+                //EDIT: 30/5 by Dieu - Xóa ảnh cũ trên Cloudinary
+                if (existingRequest.Medias != null && existingRequest.Medias.Any())
+                {
+                    foreach (var oldMedia in existingRequest.Medias)
+                    {
+                        var resourceType = oldMedia.ResourceType == Domain.Enums.MediaType.Image 
+                            ? CloudinaryDotNet.Actions.ResourceType.Image 
+                            : CloudinaryDotNet.Actions.ResourceType.Video;
+                        await _cloudinaryService.DeleteAsync(oldMedia.PublicId, resourceType);
+                    }
+                    existingRequest.Medias.Clear();
+                }
+
                 var uploadTasks = files.Select(file =>
                 {
                     var isImage = AllowedImageTypes.Contains(file.ContentType);
@@ -67,7 +89,7 @@ namespace RescueSystem.Application.Features.Request.Commands.UpdateRequest
             existingRequest.UserId = request.UserId;
             existingRequest.EmergencyType = request.EmergencyType;
             existingRequest.Priority = request.Priority;
-            existingRequest.Status = request.Status;
+            // existingRequest.Status = request.Status; //EDIT: 30/5 by Dieu - Bỏ quyền tự ý cập nhật Status
             existingRequest.LocationId = request.LocationId;
             existingRequest.Description = request.Description;
             existingRequest.UpdatedAt = DateTime.UtcNow;

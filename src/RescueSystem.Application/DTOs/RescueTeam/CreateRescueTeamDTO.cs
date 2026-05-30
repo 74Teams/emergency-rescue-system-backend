@@ -10,6 +10,7 @@ namespace RescueSystem.Application.DTOs.RescueTeam
         public string TeamName { get; set; } = string.Empty;
         public Guid TeamLeaderId { get; set; }
         public Guid BaseLocationId { get; set; }
+        public List<Guid>? MemberIds { get; set; }
 
     }
 }

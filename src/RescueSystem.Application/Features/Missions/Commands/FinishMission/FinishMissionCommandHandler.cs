@@ -3,6 +3,7 @@ using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Domain.Enums;
 using System;
+using System.Linq; //EDIT: 30/5 by Dieu - Để sử dụng Linq cho list
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,9 +32,9 @@ namespace RescueSystem.Application.Features.Missions.Commands.FinishMission
                 throw new Exception("Không tìm thấy nhiệm vụ!");
             }
 
-            if (mission.Status != MissionStatus.IN_PROGRESS)
+            if (mission.Status != MissionStatus.IN_PROGRESS && mission.Status != MissionStatus.ON_SITE) //EDIT: 30/5 by Dieu - Cho phép hoàn thành từ ON_SITE
             {
-                throw new Exception("Chỉ có thể hoàn thành khi nhiệm vụ đang IN_PROGRESS");
+                throw new Exception("Chỉ có thể hoàn thành khi nhiệm vụ đang IN_PROGRESS hoặc ON_SITE");
             }
 
             var previousStatus = mission.Status;
@@ -49,7 +50,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.FinishMission
                 ToStatus = mission.Status,
                 ChangedById = request.ChangedById,
                 Note = request.Note,
-                CreatedAt = DateTime.UtcNow.AddHours(7)
+                CreatedAt = DateTime.UtcNow //EDIT: 30/5 by Dieu - Đồng bộ UTC
             };
 
             await _missionRepository.UpdateAsync(mission);
@@ -59,11 +60,11 @@ namespace RescueSystem.Application.Features.Missions.Commands.FinishMission
             if (team != null)
             {
                 team.Status = TeamStatus.AVAILABLE;
-                team.UpdatedAt = DateTime.UtcNow.AddHours(7);
+                team.UpdatedAt = DateTime.UtcNow; //EDIT: 30/5 by Dieu - Đồng bộ UTC
                 await _rescueTeamRepository.UpdateTeamStatusAsync(team.Id, TeamStatus.AVAILABLE);
             }
 
-            await _requestRepository.UpdateStatusAsync(mission.RequestId, RequestStatus.COMPLETED);
+            await _requestRepository.UpdateStatusAsync(mission.RequestId, RequestStatus.COMPLETED); //EDIT: 30/5 by Dieu - Request hoàn thành cùng với Mission
 
             return true;
         }

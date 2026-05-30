@@ -18,7 +18,6 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        // Lấy 
         public Task<List<RescueRequest>> GetAllAsync()
         {
             return _context.Requests

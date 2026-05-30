@@ -9,5 +9,6 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
         public string? Description { get; set; }
         public Guid TeamLeaderId { get; set; }
         public Guid BaseLocationId { get; set; }
+        public List<Guid>? MemberIds { get; set; }
     }
 }

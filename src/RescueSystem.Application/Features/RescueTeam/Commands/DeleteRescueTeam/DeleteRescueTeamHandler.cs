@@ -8,6 +8,7 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.DeleteRescueTeam
     {
         private readonly IRescueTeamRepository _rescueTeamRepository;
         private readonly IUserRepository _userRepository;
+
         public DeleteRescueTeamHandler(
             IRescueTeamRepository rescueTeamRepository,
             IUserRepository userRepository)
@@ -23,8 +24,13 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.DeleteRescueTeam
             {
                 throw new KeyNotFoundException("Rescue team not found");
             }
-
             var leaderId = team.TeamLeaderId;
+
+            team.TeamLeader = null;
+            if (team.Members != null)
+            {
+                team.Members = null;
+            }
 
             var isDeleted = await _rescueTeamRepository.DeleteAsync(team);
 
@@ -41,7 +47,6 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.DeleteRescueTeam
                 rolesList.Remove("RescuerLeader");
                 await _userRepository.UpdateUserRolesAsync(leaderId, rolesList);
             }
-            // ===================================================
 
             return true;
         }

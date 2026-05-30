@@ -9,5 +9,6 @@ namespace RescueSystem.Application.DTOs.RescueTeam
 
         public string Avatar { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
+        public List<string> Roles { get; set; } = new();
     }
 }

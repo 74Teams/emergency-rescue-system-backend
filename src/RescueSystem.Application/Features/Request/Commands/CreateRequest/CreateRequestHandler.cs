@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using MediatR;
@@ -68,7 +68,7 @@ namespace RescueSystem.Application.Features.Request.Commands.CreateRequest
                 UserId = request.UserId,
                 EmergencyType = request.EmergencyType,
                 Priority = request.Priority,
-                Status = request.Status,
+                Status = RequestStatus.PENDING, //EDIT: 30/5 by Dieu
                 LocationId = request.LocationId,
                 Description = request.Description,
                 Medias = medias.Select(m => new RequestMedia

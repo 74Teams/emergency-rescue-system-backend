@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RescueSystem.Application.Common.Exception;
 using RescueSystem.Application.DTOs.Commander;
@@ -357,6 +357,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
                 IsActive = u.IsActive,
                 IsPendingApproval = u.IsPendingApproval,
                 CreatedAt = u.CreatedAt,
+                RescueTeamId = u.RescueTeamId,
 
                 Roles = _context.UserRoles
                     .Where(ur => ur.UserId == u.Id)

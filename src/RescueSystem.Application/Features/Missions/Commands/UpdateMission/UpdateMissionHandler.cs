@@ -176,7 +176,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.UpdateMission
 
             var previousStatus = mission.Status;
             mission.Status = request.Status;
-            mission.UpdatedAt = DateTime.UtcNow.AddHours(7);
+            mission.UpdatedAt = DateTime.UtcNow; //EDIT: 30/5 by Dieu - Đồng bộ UTC
 
             var history = new MissionHistory
             {
@@ -185,7 +185,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.UpdateMission
                 ToStatus = mission.Status,
                 ChangedById = request.ChangedById,
                 Note = request.Note,
-                CreatedAt = DateTime.UtcNow.AddHours(7)
+                CreatedAt = DateTime.UtcNow //EDIT: 30/5 by Dieu - Đồng bộ UTC
             };
 
             await _missionRepository.UpdateAsync(mission);
@@ -200,7 +200,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.UpdateMission
                 if (team != null)
                 {
                     team.Status = TeamStatus.ON_MISSION;
-                    team.UpdatedAt = DateTime.UtcNow.AddHours(7);
+                    team.UpdatedAt = DateTime.UtcNow; //EDIT: 30/5 by Dieu - Đồng bộ UTC
                     await _rescueTeamRepository.UpdateTeamStatusAsync(team.Id, TeamStatus.ON_MISSION);
                 }
             }

@@ -9,5 +9,6 @@ namespace RescueSystem.Application.DTOs.Commander
     public class UserSystemDTO : UserDTO
     {
         public bool IsPendingApproval { get; set; }
+        public Guid? RescueTeamId { get; set; }
     }
 }

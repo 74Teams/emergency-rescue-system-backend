@@ -45,6 +45,7 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
             if (!rolesList.Contains("RescuerLeader"))
             {
                 rolesList.Add("RescuerLeader");
+                await _userRepository.UpdateUserRolesAsync(request.TeamLeaderId, rolesList);
             }
             else
             {
@@ -55,6 +56,18 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.CreateRescueTeam
             {
                 throw new Exception("Tạo đội thành công nhưng không thể thêm Đội trưởng vào danh sách thành viên.");
             }
+
+            if (request.MemberIds != null && request.MemberIds.Any())
+            {
+                foreach (var mId in request.MemberIds)
+                {
+                    if (mId != request.TeamLeaderId)
+                    {
+                        await _rescueTeamRepository.AddMemberAsync(teamId, mId);
+                    }
+                }
+            }
+
             return new RescueTeamDTO
             {
                 Id = rescueTeam.Id,

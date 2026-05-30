@@ -6,8 +6,8 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.AddMemberToRescu
     {
         public AddMemberToRescueTeamValidator()
         {
-            RuleFor(x => x.TeamId).NotEmpty().WithMessage("TeamId is required");
-            RuleFor(x => x.MemberId).NotEmpty().WithMessage("MemberId is required");
+            RuleFor(x => x.TeamId).NotEmpty().WithMessage("Yêu cầu cần có một Đội cứu hộ");
+            RuleFor(x => x.MemberId).NotEmpty().WithMessage("Yêu cầu cần có một người");
         }
     }
 }

@@ -50,7 +50,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.AbortMission
                 ToStatus = mission.Status,
                 ChangedById = request.ChangedById,
                 Note = request.Note,
-                CreatedAt = DateTime.UtcNow.AddHours(7)
+                CreatedAt = DateTime.UtcNow //EDIT: 30/5 by Dieu - Đồng bộ UTC
             };
 
             await _missionRepository.UpdateAsync(mission);
@@ -63,7 +63,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.AbortMission
             if (team != null)
             {
                 team.Status = TeamStatus.AVAILABLE;
-                team.UpdatedAt = DateTime.UtcNow.AddHours(7);
+                team.UpdatedAt = DateTime.UtcNow; //EDIT: 30/5 by Dieu - Đồng bộ UTC
                 await _rescueTeamRepository.UpdateTeamStatusAsync(team.Id, TeamStatus.AVAILABLE);
             }
 

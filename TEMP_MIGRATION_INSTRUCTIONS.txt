@@ -14,3 +14,6 @@ dotnet ef database update -p src/RescueSystem.Infrastructure/RescueSystem.Infras
 // Or use Package Manager Console in Visual Studio:
 // PM> Add-Migration AddRescueTeamIdToUsers -Project RescueSystem.Infrastructure -StartupProject RescueSystem.Api
 // PM> Update-Database -Project RescueSystem.Infrastructure -StartupProject RescueSystem.Api
+
+public interface IRequestHandler<in TRequest, TResponse> 
+    where TRequest : IRequest<TResponse>

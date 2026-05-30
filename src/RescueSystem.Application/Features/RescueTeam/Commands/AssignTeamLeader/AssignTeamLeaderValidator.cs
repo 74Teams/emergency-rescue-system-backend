@@ -8,10 +8,10 @@ namespace RescueSystem.Application.Features.RescueTeam.Commands.AssignTeamLeader
         public AssignTeamLeaderValidator()
         {
             RuleFor(x => x.TeamId)
-                .NotEmpty().WithMessage("Team is required");
+                .NotEmpty().WithMessage("Yêu cầu cần có một Đội cứu hộ");
 
             RuleFor(x => x.UserId)
-                .NotEmpty().WithMessage("User is required");
+                .NotEmpty().WithMessage("Yêu cầu cần có một người đảm nhận");
 
         }
     }
