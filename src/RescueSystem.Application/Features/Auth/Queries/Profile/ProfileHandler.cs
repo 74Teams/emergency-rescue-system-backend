@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using MediatR;
@@ -37,6 +37,7 @@ namespace RescueSystem.Application.Features.Auth.Queries.Profile
             {
                 Id = foundUser.Id,
                 Fullname = foundUser.FullName,
+                UserName = foundUser.UserName,
                 Email = foundUser.Email ?? string.Empty,
                 PhoneNumber = foundUser.PhoneNumber ?? string.Empty,
                 Address = address == null ? null : new AddressDTO

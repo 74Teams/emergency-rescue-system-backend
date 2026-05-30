@@ -11,13 +11,10 @@ namespace RescueSystem.Domain.Entities
         public string Avatar { get; set; } = string.Empty;
         public string AvatarPublicId { get; set; } = string.Empty;
 
-        //Trạng thái tài khoản(cho đăng nhập hay không)
         public bool IsActive { get; set; } = true;
-        //Trạng thái tài khoản đang cần phê duyệt hay không
         public bool IsPendingApproval { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        // Navigation Properties
         public ICollection<RescueRequest> Requests { get; set; } = new List<RescueRequest>();
         public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
         public Guid? RescueTeamId { get; set; }

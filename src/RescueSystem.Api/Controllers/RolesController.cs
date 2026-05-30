@@ -77,7 +77,6 @@ namespace RescueSystem.Api.Controllers
             return Ok(ApiResponse<object>.SuccessResponse(null, "Update role successfully"));
         }
 
-
         // delete role
         [HttpDelete("{id}")]
         [SwaggerOperation(

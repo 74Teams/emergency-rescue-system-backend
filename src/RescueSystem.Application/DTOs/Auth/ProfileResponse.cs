@@ -1,4 +1,4 @@
-﻿using RescueSystem.Application.DTOs.Address;
+using RescueSystem.Application.DTOs.Address;
 using RescueSystem.Application.DTOs.Contact;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,8 @@ namespace RescueSystem.Application.DTOs.Auth
         //alias
         [System.Text.Json.Serialization.JsonPropertyName("fullName")]
         public string Fullname { get; set; } = string.Empty;
+        [System.Text.Json.Serialization.JsonPropertyName("userName")]
+        public string? UserName { get; set; }
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public AddressDTO? Address { get; set; }
