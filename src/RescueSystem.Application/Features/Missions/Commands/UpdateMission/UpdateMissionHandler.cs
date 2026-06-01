@@ -105,6 +105,7 @@ using MediatR;
 using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Domain.Enums;
+using RescueSystem.Application.Common.Exception;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -132,7 +133,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.UpdateMission
             var mission = await _missionRepository.GetByIdAsync(request.MissionId);
             if (mission == null)
             {
-                throw new Exception("Không tìm thấy nhiệm vụ!");
+                throw new NotFoundException("Không tìm thấy nhiệm vụ!");
             }
 
             // FIXED: Allow abort from any state except already completed/aborted
@@ -140,19 +141,19 @@ namespace RescueSystem.Application.Features.Missions.Commands.UpdateMission
             {
                 if (mission.Status == MissionStatus.COMPLETED || mission.Status == MissionStatus.ABORTED)
                 {
-                    return false;
+                    throw new BadRequestException($"Không thể hủy nhiệm vụ vì nhiệm vụ đã ở trạng thái {mission.Status}");
                 }
                 // Allow abort from any other state
             }
             else if (mission.Status == MissionStatus.COMPLETED || mission.Status == MissionStatus.ABORTED)
             {
                 // Cannot update completed/aborted missions
-                return false;
+                throw new BadRequestException($"Không thể cập nhật nhiệm vụ vì nhiệm vụ đã kết thúc với trạng thái {mission.Status}");
             }
             else if (request.Status == MissionStatus.COMPLETED)
             {
                 // COMPLETED should only come from FinishMission endpoint
-                return false;
+                throw new BadRequestException("Không thể cập nhật nhiệm vụ thành trạng thái COMPLETED thông qua API này. Vui lòng dùng endpoint FinishMission.");
             }
             else
             {
@@ -170,7 +171,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.UpdateMission
 
                 if (!isValidTransition)
                 {
-                    return false;
+                    throw new BadRequestException($"Không thể chuyển trạng thái nhiệm vụ từ {mission.Status} sang {request.Status}");
                 }
             }
 

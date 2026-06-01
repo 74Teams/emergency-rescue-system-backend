@@ -46,7 +46,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.CreateMission
                 RequestId = request.RequestId,
                 DispatcherId = request.DispatcherId,
                 RescueTeamId = request.RescueTeamId,
-                StartTime = DateTime.UtcNow, //EDIT: 30/5 by Dieu - Đồng bộ UTC
+                StartTime = DateTime.UtcNow,
                 Status = Domain.Enums.MissionStatus.ASSIGNED,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
@@ -60,8 +60,8 @@ namespace RescueSystem.Application.Features.Missions.Commands.CreateMission
                 FromStatus = null,
                 ToStatus = mission.Status,
                 ChangedById = request.DispatcherId,
-                Note = "Dispatcher created mission",
-                CreatedAt = DateTime.UtcNow //EDIT: 30/5 by Dieu - Đồng bộ UTC
+                Note = "Điều phối viên đã tạo mission",
+                CreatedAt = DateTime.UtcNow
             };
             await _missionRepository.AddHistoryAsync(history);
 

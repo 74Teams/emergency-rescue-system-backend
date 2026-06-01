@@ -2,6 +2,7 @@ using MediatR;
 using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Domain.Enums;
+using RescueSystem.Application.Common.Exception;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,12 +30,11 @@ namespace RescueSystem.Application.Features.Missions.Commands.AbortMission
             var mission = await _missionRepository.GetByIdAsync(request.MissionId);
             if (mission == null)
             {
-                throw new Exception("Không tìm thấy nhiệm vụ!");
+                throw new NotFoundException("Không tìm thấy nhiệm vụ!");
             }
-            // khoong cho abort khi nvu đã hoàn thành hoặc đã bị hủy
             if (mission.Status == MissionStatus.COMPLETED || mission.Status == MissionStatus.ABORTED)
             {
-                throw new Exception("Nhiệm vụ đã kết thúc, không thể hủy.");
+                throw new BadRequestException("Nhiệm vụ đã kết thúc, không thể hủy.");
             }
 
             var previousStatus = mission.Status;
@@ -43,14 +43,20 @@ namespace RescueSystem.Application.Features.Missions.Commands.AbortMission
             mission.UpdatedAt = DateTime.UtcNow;
 
 
+            Guid changedByGuid = Guid.Empty;
+            if (!string.IsNullOrEmpty(request.ChangedById) && Guid.TryParse(request.ChangedById, out var parsedGuid))
+            {
+                changedByGuid = parsedGuid;
+            }
+
             var history = new MissionHistory
             {
                 MissionId = mission.Id,
                 FromStatus = previousStatus,
                 ToStatus = mission.Status,
-                ChangedById = request.ChangedById,
-                Note = request.Note,
-                CreatedAt = DateTime.UtcNow //EDIT: 30/5 by Dieu - Đồng bộ UTC
+                ChangedById = changedByGuid == Guid.Empty ? mission.DispatcherId : changedByGuid,
+                Note = string.IsNullOrWhiteSpace(request.Note) ? "Hủy bỏ nhiệm vụ" : request.Note,
+                CreatedAt = DateTime.UtcNow 
             };
 
             await _missionRepository.UpdateAsync(mission);
@@ -63,7 +69,7 @@ namespace RescueSystem.Application.Features.Missions.Commands.AbortMission
             if (team != null)
             {
                 team.Status = TeamStatus.AVAILABLE;
-                team.UpdatedAt = DateTime.UtcNow; //EDIT: 30/5 by Dieu - Đồng bộ UTC
+                team.UpdatedAt = DateTime.UtcNow; 
                 await _rescueTeamRepository.UpdateTeamStatusAsync(team.Id, TeamStatus.AVAILABLE);
             }
 

@@ -21,11 +21,11 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
         public async Task<Guid> AddAsync(Mission mission)
         {
             var req = await _context.Requests.FindAsync(mission.RequestId);
-            if (req == null) throw new NotFoundException("Request not found");
+            if (req == null) throw new NotFoundException("Không tìm thấy yêu cầu");
             var dispatcher = await _context.Users.FindAsync(mission.DispatcherId);
-            if (dispatcher == null) throw new NotFoundException("Dispatcher not found");
+            if (dispatcher == null) throw new NotFoundException("Không tìm thấy điều phối viên");
             var rescueTeam = await _context.RescueTeams.FindAsync(mission.RescueTeamId);
-            if (rescueTeam == null) throw new NotFoundException("Rescue team not found");
+            if (rescueTeam == null) throw new NotFoundException("Không tìm thấy đội cứu hộ");
             await _context.Missions.AddAsync(mission);
             await _context.SaveChangesAsync();
 

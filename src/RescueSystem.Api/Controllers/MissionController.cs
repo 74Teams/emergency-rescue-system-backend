@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RescueSystem.Application.Common.Response;
 using RescueSystem.Application.DTOs.Mission;
@@ -165,12 +165,14 @@ namespace RescueSystem.Api.Controllers
             Summary = "Abort mission",
             Description = "Hủy bỏ nhiệm vụ"
         )]
-        public async Task<ActionResult<object>> AbortMission(Guid id)
+        public async Task<ActionResult<object>> AbortMission(Guid id, [FromBody] AbortMissionCommand? command)
         {
-            var command = new AbortMissionCommand
+            command ??= new AbortMissionCommand();
+            command.MissionId = id;
+            if (string.IsNullOrEmpty(command.ChangedById))
             {
-                MissionId = id
-            };
+                command.ChangedById = GetCurrentUserId()?.ToString();
+            }
 
             var res = await mediator.Send(command);
 

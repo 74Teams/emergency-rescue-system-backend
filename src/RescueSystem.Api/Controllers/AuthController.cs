@@ -123,7 +123,7 @@ namespace RescueSystem.Api.Controllers
 
             var result = await _mediator.Send(command);
 
-            return Ok(ApiResponse<object>.SuccessResponse(result, "Upload avatar success", StatusCodes.Status200OK));
+            return Ok(ApiResponse<object>.SuccessResponse(result, "Cập nhật avatar thành công", StatusCodes.Status200OK));
         }
 
         // Post api/auth/contact/{id}
