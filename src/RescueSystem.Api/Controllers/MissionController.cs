@@ -211,6 +211,31 @@ namespace RescueSystem.Api.Controllers
             );
         }
 
+        // POST api/missions/{id}/history
+        [HttpPost("{id}/history")]
+        [SwaggerOperation(
+            Summary = "Add a note to mission history",
+            Description = "Thêm một ghi chú hoặc thông báo vào lịch sử nhiệm vụ mà không đổi trạng thái"
+        )]
+        public async Task<ActionResult<object>> AddMissionHistory(Guid id, [FromBody] RescueSystem.Application.Features.Missions.Commands.AddMissionHistory.AddMissionHistoryCommand command)
+        {
+            command.MissionId = id;
+            if (command.ChangedById == Guid.Empty)
+            {
+                command.ChangedById = GetCurrentUserId() ?? Guid.Empty;
+            }
+
+            var res = await mediator.Send(command);
+
+            return Ok(
+                ApiResponse<object>.SuccessResponse(
+                    data: null,
+                    message: "Add mission history successfully",
+                    statusCode: StatusCodes.Status200OK
+                )
+            );
+        }
+
 
     }
 }

@@ -33,9 +33,19 @@ namespace RescueSystem.Application.Features.Auth.Queries.Profile
             var roles = await _userRepository.GetUserRolesAsync(foundUser);
             var address = await _userRepository.GetAddressByUserIdAsync(foundUser.Id);
             var contacts = await _contactRepository.GetByUserIdAsync(foundUser.Id);
+            // Lấy thông tin đội cứu hộ (nếu user thuộc đội nào)
+            string? teamName = null;
+            if (foundUser.RescueTeamId.HasValue)
+            {
+                var team = await _rescueTeamRepository.GetByIdAsync(foundUser.RescueTeamId.Value);
+                teamName = team?.TeamName;
+            }
+
             return new ProfileResponse
             {
                 Id = foundUser.Id,
+                RescueTeamId = foundUser.RescueTeamId,
+                TeamName = teamName,
                 Fullname = foundUser.FullName,
                 UserName = foundUser.UserName,
                 Email = foundUser.Email ?? string.Empty,

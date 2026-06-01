@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RescueSystem.Application.Common.Exception;
 using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
@@ -34,7 +34,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
 
         public async Task UpdateAsync(Mission mission)
         {
-            _context.Missions.Update(mission);
+            _context.Entry(mission).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 

@@ -39,7 +39,7 @@ namespace RescueSystem.Application.Features.RescueTeam.Queries.GetMissionsByTeam
                 EndTime = m.EndTime.HasValue ? m.EndTime.Value.AddHours(7) : null,
                 CreateAt = m.CreatedAt.AddHours(7),
                 UpdateAt = m.UpdatedAt.AddHours(7),
-                Status = m.Request!.Status
+                Status = m.Status
             }).ToList();
         }
     }
