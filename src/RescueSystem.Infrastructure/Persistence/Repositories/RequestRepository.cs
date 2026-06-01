@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
@@ -104,7 +104,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
         }
         public async Task UpdateAsync(RescueRequest request)
         {
-            _context.Requests.Update(request);
+            _context.Entry(request).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
         public async Task UpdateStatusAsync(Guid requestId, RequestStatus status)
@@ -113,7 +113,6 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
             if (request != null)
             {
                 request.Status = status;
-                _context.Requests.Update(request);
                 await _context.SaveChangesAsync();
                 return;
             }

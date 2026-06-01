@@ -61,6 +61,7 @@ namespace RescueSystem.Api.Controllers
 
         // GET api/users/{id} - Get user by id
         [HttpGet("{id}")]
+        [Authorize(Roles = "Commander, Dispatcher")]
         [SwaggerOperation(
             Summary = "Get user by id",
             Description = "Lấy thông tin user theo Id"

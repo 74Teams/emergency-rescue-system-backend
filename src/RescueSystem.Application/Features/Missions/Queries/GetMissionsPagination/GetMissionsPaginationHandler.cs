@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.Common.Models;
@@ -67,7 +67,7 @@ namespace RescueSystem.Application.Features.Missions.Queries.GetMissionsPaginati
                     EndTime = m.EndTime.HasValue ? m.EndTime.Value.AddHours(7) : null,
                     CreateAt = m.CreatedAt.AddHours(7),
                     UpdateAt = m.UpdatedAt.AddHours(7),
-                    Status = m.Request!.Status
+                    Status = m.Status
                 })
                 .ToListAsync(cancellationToken);
             return new PagedResult<MissionDTO>
