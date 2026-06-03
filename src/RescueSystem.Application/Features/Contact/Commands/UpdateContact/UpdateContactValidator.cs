@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,8 +27,8 @@ namespace RescueSystem.Application.Features.Contact.Commands.UpdateContact
                 .WithMessage("Số điện thoại không hợp lệ");
 
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Email không được để trống")
-                .EmailAddress().WithMessage("Email không hợp lệ");
+                .EmailAddress().WithMessage("Email không hợp lệ")
+                .When(x => !string.IsNullOrEmpty(x.Email));
         }
     }
 }
