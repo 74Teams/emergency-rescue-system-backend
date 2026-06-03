@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RescueSystem.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using RescueSystem.Infrastructure.Persistence;
 namespace RescueSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260602083105_seeder")]
+    partial class seeder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -806,39 +809,6 @@ namespace RescueSystem.Infrastructure.Migrations
                     b.ToTable("RescueTeams", (string)null);
                 });
 
-            modelBuilder.Entity("RescueSystem.Domain.Entities.RescueTeamJoinRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("RescueTeamId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RescuerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RescueTeamId");
-
-                    b.HasIndex("RescuerId");
-
-                    b.ToTable("RescueTeamJoinRequests");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("RescueSystem.Domain.Entities.ApplicationRole", null)
@@ -1066,25 +1036,6 @@ namespace RescueSystem.Infrastructure.Migrations
                     b.Navigation("BaseLocation");
 
                     b.Navigation("TeamLeader");
-                });
-
-            modelBuilder.Entity("RescueSystem.Domain.Entities.RescueTeamJoinRequest", b =>
-                {
-                    b.HasOne("RescueSystem.Domain.Entities.RescueTeam", "RescueTeam")
-                        .WithMany()
-                        .HasForeignKey("RescueTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RescueSystem.Domain.Entities.ApplicationUser", "Rescuer")
-                        .WithMany()
-                        .HasForeignKey("RescuerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RescueTeam");
-
-                    b.Navigation("Rescuer");
                 });
 
             modelBuilder.Entity("RescueSystem.Domain.Entities.ApplicationUser", b =>

@@ -3,7 +3,7 @@ using RescueSystem.Application.DTOs.Auth;
 
 namespace RescueSystem.Application.Features.Auth.Commands.Register
 {
-    public class RegisterCommand : IRequest<Unit>
+    public class RegisterCommand : IRequest<AuthResponse>
     {
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

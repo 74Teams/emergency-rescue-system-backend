@@ -65,7 +65,9 @@ namespace RescueSystem.Application.Features.Auth.Queries.Profile
                     PhoneNumber = contact.PhoneNumber,
                     Email = contact.Email
                 }).ToList(),
-                Roles = roles
+                Roles = roles,
+                IsActive = foundUser.IsActive,
+                IsPendingApproval = foundUser.IsPendingApproval
             };
         }
     }

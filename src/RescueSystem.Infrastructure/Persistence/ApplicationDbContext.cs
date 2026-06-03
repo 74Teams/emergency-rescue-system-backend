@@ -24,6 +24,7 @@ namespace RescueSystem.Infrastructure.Persistence
         public DbSet<Checklist> Checklists { get; set; }
         public DbSet<ChecklistItem> ChecklistItems { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<RescueTeamJoinRequest> RescueTeamJoinRequests { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

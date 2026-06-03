@@ -63,6 +63,7 @@ namespace RescueSystem.Infrastructure
             services.AddScoped<IRescueTeamRepository, RescueTeamRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            services.AddScoped<IRescueTeamJoinRequestRepository, RescueTeamJoinRequestRepository>();
             return services;
         }
     }

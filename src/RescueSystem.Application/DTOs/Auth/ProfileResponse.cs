@@ -21,5 +21,7 @@ namespace RescueSystem.Application.DTOs.Auth
         public AddressDTO? Address { get; set; }
         public List<ContactDTO> Contacts { get; set; } = new();
         public IList<string> Roles { get; set; } = new List<string>();
+        public bool IsActive { get; set; }
+        public bool IsPendingApproval { get; set; }
     }
 }

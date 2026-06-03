@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,5 +20,7 @@ namespace RescueSystem.Application.DTOs.Auth
         public string? PhoneNumber { get; set; }
         public IList<string> Roles { get; set; } = new List<string>();
         public string Avatar { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
+        public bool IsPendingApproval { get; set; }
     }
 }

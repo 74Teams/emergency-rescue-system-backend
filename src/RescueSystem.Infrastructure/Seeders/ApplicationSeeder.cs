@@ -22,10 +22,75 @@ namespace RescueSystem.Infrastructure.Seeders
                 await dbContext.Database.MigrateAsync();
                 await SeedRoles(roleManager);
                 await SeedUsers(userManager);
+                await SeedRescueTeams(dbContext, userManager);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Đã có lỗi xảy ra trong quá trình migrate hoặc seed dữ liệu");
+            }
+        }
+
+        private static async Task SeedRescueTeams(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        {
+            if (!await dbContext.RescueTeams.AnyAsync())
+            {
+                // Let's seed location 1 and team 1
+                var leaderUser1 = await userManager.FindByEmailAsync("vu.leader@rescuesystem.com");
+                if (leaderUser1 != null)
+                {
+                    var location1 = new Location
+                    {
+                        Latitude = 16.0678,
+                        Longitude = 108.2208,
+                        Address = "Hải Châu 1, Hải Châu, Đà Nẵng",
+                        Landmark = "Cầu Sông Hàn"
+                    };
+                    await dbContext.Locations.AddAsync(location1);
+                    await dbContext.SaveChangesAsync();
+
+                    var team1 = new RescueTeam
+                    {
+                        TeamName = "Đội Cứu Hộ Sông Hàn",
+                        TeamLeaderId = leaderUser1.Id,
+                        BaseLocationId = location1.Id,
+                        Description = "Đội cứu hộ chuyên nghiệp khu vực Cầu Sông Hàn và các quận lân cận.",
+                        Status = RescueSystem.Domain.Enums.TeamStatus.AVAILABLE
+                    };
+                    await dbContext.RescueTeams.AddAsync(team1);
+                    await dbContext.SaveChangesAsync();
+
+                    leaderUser1.RescueTeamId = team1.Id;
+                    await userManager.UpdateAsync(leaderUser1);
+                }
+
+                // Let's seed location 2 and team 2
+                var leaderUser2 = await userManager.FindByEmailAsync("hai.leader@rescuesystem.com");
+                if (leaderUser2 != null)
+                {
+                    var location2 = new Location
+                    {
+                        Latitude = 16.0748,
+                        Longitude = 108.2435,
+                        Address = "An Hải Bắc, Sơn Trà, Đà Nẵng",
+                        Landmark = "Cầu Rồng"
+                    };
+                    await dbContext.Locations.AddAsync(location2);
+                    await dbContext.SaveChangesAsync();
+
+                    var team2 = new RescueTeam
+                    {
+                        TeamName = "Đội Cứu Hộ Cầu Rồng",
+                        TeamLeaderId = leaderUser2.Id,
+                        BaseLocationId = location2.Id,
+                        Description = "Đội cứu hộ túc trực khu vực Sơn Trà, Ngũ Hành Sơn và Cầu Rồng.",
+                        Status = RescueSystem.Domain.Enums.TeamStatus.AVAILABLE
+                    };
+                    await dbContext.RescueTeams.AddAsync(team2);
+                    await dbContext.SaveChangesAsync();
+
+                    leaderUser2.RescueTeamId = team2.Id;
+                    await userManager.UpdateAsync(leaderUser2);
+                }
             }
         }
 

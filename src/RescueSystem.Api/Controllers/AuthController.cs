@@ -1,4 +1,4 @@
-﻿using CloudinaryDotNet.Actions;
+using CloudinaryDotNet.Actions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
@@ -12,6 +12,7 @@ using RescueSystem.Application.Features.Auth.Commands.ForgotPassword;
 using RescueSystem.Application.Features.Auth.Commands.Login;
 using RescueSystem.Application.Features.Auth.Commands.RefreshToken;
 using RescueSystem.Application.Features.Auth.Commands.Register;
+using RescueSystem.Application.Features.Auth.Commands.SelectRole;
 using RescueSystem.Application.Features.Auth.Commands.ResetPassword;
 using RescueSystem.Application.Features.Auth.Commands.UpdateAvatar;
 using RescueSystem.Application.Features.Auth.Commands.UpdateProfile;
@@ -46,7 +47,24 @@ namespace RescueSystem.Api.Controllers
         public async Task<ActionResult<object>> Register([FromBody] RegisterCommand command)
         {
             var result = await _mediator.Send(command);
-            return StatusCode(201, ApiResponse<object>.SuccessResponse(null, "Đăng ký tài khoản thành công", StatusCodes.Status201Created));
+            return StatusCode(201, ApiResponse<AuthResponse>.SuccessResponse(result, "Đăng ký tài khoản thành công", StatusCodes.Status201Created));
+        }
+
+        // Post api/auth/select-role
+        [Authorize]
+        [HttpPost("select-role")]
+        [SwaggerOperation(Summary = "Lựa chọn vai trò cho tài khoản")]
+        public async Task<ActionResult<object>> SelectRole([FromBody] SelectRoleCommand command)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            if (userId == null)
+            {
+                throw new UnauthorizedException("Lỗi xác thực người dùng");
+            }
+
+            command.UserId = Guid.Parse(userId);
+            var result = await _mediator.Send(command);
+            return Ok(ApiResponse<AuthResponse>.SuccessResponse(result, "Lựa chọn vai trò thành công", StatusCodes.Status200OK));
         }
 
         // Post api/auth/login

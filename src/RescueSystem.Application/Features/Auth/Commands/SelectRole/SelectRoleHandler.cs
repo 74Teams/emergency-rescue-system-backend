@@ -8,20 +8,19 @@ using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RescueSystem.Application.Features.Auth.Commands.Register
+namespace RescueSystem.Application.Features.Auth.Commands.SelectRole
 {
-    public class RegisterHandler : IRequestHandler<RegisterCommand, AuthResponse>
+    public class SelectRoleHandler : IRequestHandler<SelectRoleCommand, AuthResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly IConfiguration _configuration;
 
-        public RegisterHandler(
+        public SelectRoleHandler(
             IUserRepository userRepository,
             ITokenService tokenService,
             IRefreshTokenService refreshTokenService,
@@ -33,38 +32,41 @@ namespace RescueSystem.Application.Features.Auth.Commands.Register
             _configuration = configuration;
         }
 
-        public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponse> Handle(SelectRoleCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetUserByEmailAsync(request.Email);
-            if (existingUser != null)
+            var user = await _userRepository.GetUserByIdAsync(request.UserId.ToString());
+            if (user == null)
             {
-                throw new BadRequestException("Email đã được sử dụng");
+                throw new NotFoundException("Không tìm thấy người dùng");
             }
 
-            var user = new ApplicationUser
+            // Verify the role is valid
+            if (!Enum.TryParse<RoleEnum>(request.Role, true, out var roleEnum))
             {
-                Id = Guid.NewGuid(),
-                UserName = request.UserName,
-                Email = request.Email,
-                FullName = request.FullName,
-                PhoneNumber = request.PhoneNumber,
-                Address = request.Address ?? string.Empty,
-                DateOfBirth = request.DateOfBirth == default ? new DateTime(2000, 1, 1) : request.DateOfBirth,
-                Avatar = request.Avatar ?? string.Empty,
-                IsActive = true, // Set to true so they can login/be authenticated to call select-role API
-                IsPendingApproval = false,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-
-            var result = await _userRepository.CreateUserAsync(user, request.Password);
-
-            if (!result.Succeeded)
-            {
-                throw new BadRequestException(string.Join(", ", result.Errors.Select(e => e.Description)));
+                throw new BadRequestException("Vai trò không hợp lệ");
             }
 
-            var roles = new List<string>();
+            var roleName = roleEnum.ToString();
+
+            // Commander is not allowed to be self-selected during signup
+            if (roleEnum == RoleEnum.Commander)
+            {
+                throw new BadRequestException("Không thể tự chọn vai trò Chỉ huy (Commander)");
+            }
+
+            var isCitizen = roleEnum == RoleEnum.Citizen;
+            var isPendingApproval = roleEnum == RoleEnum.Dispatcher || roleEnum == RoleEnum.Rescuer;
+
+            user.IsActive = isCitizen; // Dispatcher & Rescuer are inactive until approved by Commander
+            user.IsPendingApproval = isPendingApproval;
+            user.UpdatedAt = DateTime.UtcNow;
+
+            // Update user roles and save user status
+            await _userRepository.UpdateUserRolesAsync(user.Id, new List<string> { roleName });
+            await _userRepository.UpdateUserAsync(user);
+
+            // Generate tokens for the selected role session
+            var roles = new List<string> { roleName };
             var accessToken = _tokenService.GenerateToken(user.Id.ToString(), user.Email, roles);
             var refreshToken = await _refreshTokenService.GenerateAndStoreAsync(user.Id, cancellationToken);
             var expiryMinutes = int.Parse(_configuration["JwtSettings:ExpiryMinutes"] ?? "30");
