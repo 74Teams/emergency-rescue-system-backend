@@ -71,8 +71,12 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
                 .ThenInclude(r => r!.Location)
             .Include(x => x.Request)
                 .ThenInclude(r => r!.RequestedBy)
+            .Include(x => x.Request)
+                .ThenInclude(r => r!.Medias)
             .Include(x => x.Dispatcher)
             .Include(x => x.RescueTeam)
+            .Include(x => x.Checklists)
+                .ThenInclude(c => c.ChecklistItems)
             .FirstOrDefaultAsync(x => x.Id == id);
         }
 

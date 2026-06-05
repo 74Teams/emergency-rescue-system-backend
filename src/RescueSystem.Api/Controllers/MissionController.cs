@@ -127,7 +127,7 @@ namespace RescueSystem.Api.Controllers
             return Guid.TryParse(id, out var guid) ? guid : null;
         }
 
-        [Authorize(Roles = "Rescuer,Dispatcher")]
+        [Authorize(Roles = "Rescuer,RescuerLeader,Dispatcher")]
         [HttpPut("{id}/finish")]
         [SwaggerOperation(
             Summary = "Finish mission",

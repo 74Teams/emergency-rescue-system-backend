@@ -1,6 +1,7 @@
-﻿using RescueSystem.Application.DTOs.Dispatcher;
+using RescueSystem.Application.DTOs.Dispatcher;
 using RescueSystem.Application.DTOs.Request;
 using RescueSystem.Application.DTOs.RescueTeam;
+using RescueSystem.Application.Features.Checklist;
 using RescueSystem.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,6 @@ namespace RescueSystem.Application.DTOs.Mission
         public DateTime? EndTime { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
-
+        public List<ChecklistDetailDTO> Checklists { get; set; } = new();
     }
 }

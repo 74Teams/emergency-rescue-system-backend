@@ -1,5 +1,6 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RescueSystem.Application.Common.Response;
 using RescueSystem.Application.Features.Checklist.Commands.CreateChecklist;
@@ -12,6 +13,8 @@ using RescueSystem.Application.Features.ChecklistItem.Commands.DeleteChecklistIt
 using RescueSystem.Application.Features.ChecklistItem.Commands.UpdateChecklistItem;
 using RescueSystem.Application.Features.ChecklistItem.Queries.GetChecklistItemById;
 using RescueSystem.Application.Features.ChecklistItem.Queries.GetChecklistItems;
+using System;
+using System.Threading.Tasks;
 
 namespace RescueSystem.Api.Controllers
 {
@@ -27,7 +30,7 @@ namespace RescueSystem.Api.Controllers
         }
 
         // POST api/checklist
-        [Authorize(Roles = "Rescuer")]
+        [Authorize(Roles = "Rescuer,RescuerLeader")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateChecklistCommand command)
         {
@@ -41,8 +44,7 @@ namespace RescueSystem.Api.Controllers
         }
 
         // GET api/checklist
-
-        [Authorize(Roles = "Dispatcher,Rescuer,Commander")]
+        [Authorize(Roles = "Dispatcher,Rescuer,RescuerLeader,Commander")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -56,8 +58,7 @@ namespace RescueSystem.Api.Controllers
         }
 
         // GET api/checklist/{id} - join checklist items
-
-        [Authorize(Roles = "Dispatcher,Rescuer,Commander")]
+        [Authorize(Roles = "Dispatcher,Rescuer,RescuerLeader,Commander")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -75,8 +76,7 @@ namespace RescueSystem.Api.Controllers
         }
 
         // POST /api/checklist/{checklistId}/items
-
-        [Authorize(Roles = "Dispatcher,Commander")]
+        [Authorize(Roles = "Dispatcher,Commander,Rescuer,RescuerLeader")]
         [HttpPost("{checklistId}/items")]
         public async Task<IActionResult> CreateItem(Guid checklistId, CreateChecklistItemCommand command)
         {
@@ -92,8 +92,7 @@ namespace RescueSystem.Api.Controllers
         }
 
         //PUT /api/checklist/items/{id}
-
-        [Authorize(Roles = "Dispatcher,Rescuer,Commander")]
+        [Authorize(Roles = "Dispatcher,Rescuer,RescuerLeader,Commander")]
         [HttpPut("items/{id}")]
         public async Task<IActionResult> UpdateItem(Guid id, UpdateChecklistItemCommand command)
         {
@@ -109,8 +108,7 @@ namespace RescueSystem.Api.Controllers
         }
 
         // PUT api/checklist/{id}
-
-        [Authorize(Roles = "Dispatcher,Commander,Rescuer")]
+        [Authorize(Roles = "Dispatcher,Commander,Rescuer,RescuerLeader")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, UpdateChecklistCommand command)
         {
@@ -124,8 +122,7 @@ namespace RescueSystem.Api.Controllers
         }
 
         // DELETE /api/checklist/items/{id}
-
-        [Authorize(Roles = "Dispatcher,Commander,Rescuer")]
+        [Authorize(Roles = "Dispatcher,Commander,Rescuer,RescuerLeader")]
         [HttpDelete("items/{id}")]
         public async Task<IActionResult> DeleteItem(Guid id)
         {
@@ -143,8 +140,7 @@ namespace RescueSystem.Api.Controllers
         }
 
         // GET /api/checklist/{id}/items
-
-        [Authorize(Roles = "Dispatcher,Rescuer,Commander")]
+        [Authorize(Roles = "Dispatcher,Rescuer,RescuerLeader,Commander")]
         [HttpGet("{id}/items")]
         public async Task<IActionResult> GetItems(Guid id)
         {
@@ -162,8 +158,7 @@ namespace RescueSystem.Api.Controllers
         }
 
         // GET /api/checklist/items/{id}
-
-        [Authorize(Roles = "Dispatcher,Rescuer,Admin")]
+        [Authorize(Roles = "Dispatcher,Rescuer,RescuerLeader,Admin")]
         [HttpGet("items/{id}")]
         public async Task<IActionResult> GetItemById(Guid id)
         {
@@ -180,8 +175,7 @@ namespace RescueSystem.Api.Controllers
         }
 
         // DELETE api/checklist/{id}
-
-        [Authorize(Roles = "Dispatcher,Admin")]
+        [Authorize(Roles = "Dispatcher,Admin,Rescuer,RescuerLeader")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
