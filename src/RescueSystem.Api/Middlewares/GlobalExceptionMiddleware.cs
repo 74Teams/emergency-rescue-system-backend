@@ -38,7 +38,6 @@ namespace RescueSystem.Api.Middlewares
             string message = "Internal Server Error";
             object? errors = null;
 
-            // Handle FluentValidation exceptions explicitly
             if (exception is ValidationException validationException)
             {
                 statusCode = (int)HttpStatusCode.BadRequest;
@@ -49,8 +48,7 @@ namespace RescueSystem.Api.Middlewares
             }
             else
             {
-                // Some application exceptions are internal to the Application project and marked internal.
-                // We cannot reference their types directly here, so match by full type name.
+                
                 var typeName = exception.GetType().FullName ?? string.Empty;
 
                 switch (typeName)
@@ -72,10 +70,8 @@ namespace RescueSystem.Api.Middlewares
                         message = exception.Message;
                         break;
                     default:
-                        // For any other exception create an ApplicationException as the default internal server error
                         var appEx = new ApplicationException("Internal Server Error");
                         statusCode = (int)HttpStatusCode.InternalServerError;
-                        // In Development expose the real exception message, otherwise use the ApplicationException message
                         message = _env.IsDevelopment() ? exception.Message : appEx.Message;
                         break;
                 }
