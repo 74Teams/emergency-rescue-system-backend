@@ -1,0 +1,22 @@
+# Directories
+bin/
+obj/
+out/
+.git/
+.vs/
+.vscode/
+TestResults/
+
+# Files
+*.user
+*.db
+*.local
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Docker
+docker-compose*
+Dockerfile*
+dockerfile*
+.dockerignore
