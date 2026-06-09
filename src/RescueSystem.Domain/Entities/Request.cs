@@ -18,6 +18,8 @@ namespace RescueSystem.Domain.Entities
 
         public string Description { get; set; } = string.Empty;
 
+        public string PhoneNumber { get; set; } = string.Empty;
+
         // Navigation Properties
         public ApplicationUser? RequestedBy { get; set; }
         public Location? Location { get; set; }

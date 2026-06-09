@@ -148,6 +148,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
             return await _context.Missions
        .AsNoTracking()
        .Include(m => m.Request)
+            .ThenInclude(r => r!.Location)
        .Include(m => m.Dispatcher)
        .Include(m => m.RescueTeam)
        .Where(m => m.RescueTeamId == teamId)

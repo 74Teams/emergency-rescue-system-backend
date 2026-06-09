@@ -23,6 +23,7 @@ namespace RescueSystem.Application.DTOs.Request
         public LocationDTO? Location { get; set; }
 
         public string Description { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
         public List<RequestMediaDTO> Medias { get; set; } = new();
         public List<MissionBriefDto> Missions { get; set; } = new();
         // public UserDTO? RequestedBy { get; set; }
@@ -58,6 +59,16 @@ namespace RescueSystem.Application.DTOs.Request
         public RequestStatus Status { get; set; } = RequestStatus.PENDING;
         public LocationEntity? Location { get; set; }
 
+    }
+
+    public class RequestBriefDTO : BaseDTO
+    {
+        public EmergencyType EmergencyType { get; set; }
+        public Priority Priority { get; set; }
+        public RequestStatus Status { get; set; }
+        public LocationDTO? Location { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
     }
 
 
