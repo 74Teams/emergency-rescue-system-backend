@@ -63,6 +63,22 @@ namespace RescueSystem.Application.Features.Missions.Queries.GetMissionsPaginati
                         Id = m.RescueTeamId,
                         TeamName = m.RescueTeam != null ? m.RescueTeam.TeamName : null,
                     },
+                    Request = m.Request != null ? new RescueSystem.Application.DTOs.Request.RequestBriefDTO
+                    {
+                        Id = m.Request.Id,
+                        EmergencyType = m.Request.EmergencyType,
+                        Priority = m.Request.Priority,
+                        Status = m.Request.Status,
+                        Description = m.Request.Description,
+                        PhoneNumber = m.Request.PhoneNumber,
+                        Location = m.Request.Location != null ? new RescueSystem.Application.DTOs.Location.LocationDTO
+                        {
+                            Id = m.Request.Location.Id,
+                            Address = m.Request.Location.Address,
+                            Latitude = m.Request.Location.Latitude,
+                            Longitude = m.Request.Location.Longitude
+                        } : null
+                    } : null,
                     StartTime = m.StartTime.AddHours(7),
                     EndTime = m.EndTime.HasValue ? m.EndTime.Value.AddHours(7) : null,
                     CreateAt = m.CreatedAt.AddHours(7),

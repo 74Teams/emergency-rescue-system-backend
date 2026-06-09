@@ -18,6 +18,7 @@ namespace RescueSystem.Application.Features.Request.Commands.CreateRequest
         public RequestStatus Status { get; set; } = RequestStatus.PENDING;
         public Guid LocationId { get; set; }
         public string Description { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
         public List<IFormFile>? Files { get; set; }
     }
 }

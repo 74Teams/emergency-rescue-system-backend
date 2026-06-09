@@ -71,6 +71,7 @@ namespace RescueSystem.Application.Features.Request.Commands.CreateRequest
                 Status = RequestStatus.PENDING, //EDIT: 30/5 by Dieu
                 LocationId = request.LocationId,
                 Description = request.Description,
+                PhoneNumber = request.PhoneNumber,
                 Medias = medias.Select(m => new RequestMedia
                 {
                     PublicId = m.PublicId,

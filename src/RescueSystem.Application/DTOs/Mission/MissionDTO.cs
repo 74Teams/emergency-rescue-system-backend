@@ -21,6 +21,8 @@ namespace RescueSystem.Application.DTOs.Mission
         // FIXED: Use nested RescueTeamDTO instead of flat properties
         public RescueTeamDTO? RescueTeam { get; set; }
 
+        public RescueSystem.Application.DTOs.Request.RequestBriefDTO? Request { get; set; }
+
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public DateTime CreateAt { get; set; }

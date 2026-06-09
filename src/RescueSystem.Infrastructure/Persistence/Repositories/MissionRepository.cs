@@ -103,6 +103,7 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
         {
             return _context.Missions
                 .Include(x => x.Request)
+                    .ThenInclude(r => r!.Location)
                 .Include(x => x.RescueTeam)
                 .Include(x => x.Dispatcher)
                 .AsQueryable();
