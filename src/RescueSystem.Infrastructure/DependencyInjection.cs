@@ -25,7 +25,11 @@ namespace RescueSystem.Infrastructure
             {
                 options.UseNpgsql(
                     connectionString,
-                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
+                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
+                          .EnableRetryOnFailure(
+                              maxRetryCount: 5,
+                              maxRetryDelay: TimeSpan.FromSeconds(30),
+                              errorCodesToAdd: null));
             });
             // Add Identity services
             services.AddIdentity<ApplicationUser, ApplicationRole>(options =>

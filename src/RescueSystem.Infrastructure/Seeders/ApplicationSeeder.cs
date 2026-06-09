@@ -17,16 +17,37 @@ namespace RescueSystem.Infrastructure.Seeders
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
-            try
+            const int maxRetries = 6;
+            const int delaySeconds = 5;
+
+            for (int retry = 1; retry <= maxRetries; retry++)
             {
-                await dbContext.Database.MigrateAsync();
-                await SeedRoles(roleManager);
-                await SeedUsers(userManager);
-                await SeedRescueTeams(dbContext, userManager);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Đã có lỗi xảy ra trong quá trình migrate hoặc seed dữ liệu");
+                try
+                {
+                    logger.LogInformation("Đang thực hiện migrate database (Lần thử {CurrentRetry}/{MaxRetries})...", retry, maxRetries);
+                    await dbContext.Database.MigrateAsync();
+                    logger.LogInformation("Migrate database thành công!");
+
+                    logger.LogInformation("Đang thực hiện seed dữ liệu hệ thống...");
+                    await SeedRoles(roleManager);
+                    await SeedUsers(userManager);
+                    await SeedRescueTeams(dbContext, userManager);
+                    
+                    logger.LogInformation("Seed dữ liệu thành công!");
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    logger.LogWarning(ex, "Thử lần {CurrentRetry} thất bại do lỗi kết nối hoặc khởi động database.", retry);
+                    if (retry == maxRetries)
+                    {
+                        logger.LogError(ex, "Đã có lỗi xảy ra trong quá trình migrate hoặc seed dữ liệu sau {MaxRetries} lần thử.", maxRetries);
+                        throw;
+                    }
+                    
+                    logger.LogInformation("Đang chờ {DelaySeconds} giây trước khi thử lại...", delaySeconds);
+                    await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
+                }
             }
         }
 
