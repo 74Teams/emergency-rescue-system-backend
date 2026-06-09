@@ -13,7 +13,7 @@ using RescueSystem.Domain.Entities;
 using RescueSystem.Application.Common.Exception;
 using RescueSystem.Application.Features.Missions.Commands.AbortMission;
 using RescueSystem.Application.Features.Missions.Queries.GetMissionHistory;
-using Microsoft.Identity.Client;
+
 
 namespace RescueSystem.Api.Controllers
 {
