@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RescueSystem.Domain.Entities;
 using System;
@@ -16,7 +16,7 @@ namespace RescueSystem.Infrastructure.Persistence.Configurations
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)
-                .HasDefaultValueSql("NEWID()");
+                .HasDefaultValueSql("gen_random_uuid()");
 
             builder.Property(e => e.MissionId)
                 .IsRequired();
@@ -26,10 +26,10 @@ namespace RescueSystem.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             builder.Property(e => e.UpdatedAt)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             builder.HasOne(e => e.Mission)
                 .WithMany(m => m.Checklists)
