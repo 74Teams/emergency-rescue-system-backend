@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RescueSystem.Application.Common.ExternalSettings;
 using RescueSystem.Infrastructure.Common.Interfaces.Repositories;
 using RescueSystem.Application.Common.Interfaces.Services;
+using RescueSystem.Application.Common.Interfaces.Repositories;
 using RescueSystem.Domain.Entities;
 using RescueSystem.Infrastructure.Persistence;
 using RescueSystem.Infrastructure.Persistence.Repositories;
@@ -68,6 +69,7 @@ namespace RescueSystem.Infrastructure
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             services.AddScoped<IRescueTeamJoinRequestRepository, RescueTeamJoinRequestRepository>();
+            services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
             return services;
         }
     }
