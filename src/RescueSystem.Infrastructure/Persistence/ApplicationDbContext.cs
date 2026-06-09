@@ -39,15 +39,20 @@ namespace RescueSystem.Infrastructure.Persistence
             builder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
             builder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens");
 
-            // Convert UTC DateTime values to GMT+7 (+7 hours) when writing to database
+            // Convert DateTime values to GMT+7 and force Kind=Unspecified for Npgsql compatibility
+            // Npgsql 8+ strictly requires Kind=Unspecified for 'timestamp without time zone' columns
             var dateTimeConverter = new Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter<DateTime, DateTime>(
-                v => v.Kind == DateTimeKind.Utc ? v.AddHours(7) : v,
-                v => v
+                v => DateTime.SpecifyKind(v.Kind == DateTimeKind.Utc ? v.AddHours(7) : v, DateTimeKind.Unspecified),
+                v => DateTime.SpecifyKind(v, DateTimeKind.Unspecified)
             );
 
             var nullableDateTimeConverter = new Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter<DateTime?, DateTime?>(
-                v => v.HasValue && v.Value.Kind == DateTimeKind.Utc ? v.Value.AddHours(7) : v,
-                v => v
+                v => v.HasValue
+                    ? DateTime.SpecifyKind(v.Value.Kind == DateTimeKind.Utc ? v.Value.AddHours(7) : v.Value, DateTimeKind.Unspecified)
+                    : v,
+                v => v.HasValue
+                    ? DateTime.SpecifyKind(v.Value, DateTimeKind.Unspecified)
+                    : v
             );
 
             foreach (var entityType in builder.Model.GetEntityTypes())
@@ -57,10 +62,12 @@ namespace RescueSystem.Infrastructure.Persistence
                     if (property.ClrType == typeof(DateTime))
                     {
                         property.SetValueConverter(dateTimeConverter);
+                        property.SetColumnType("timestamp without time zone");
                     }
                     else if (property.ClrType == typeof(DateTime?))
                     {
                         property.SetValueConverter(nullableDateTimeConverter);
+                        property.SetColumnType("timestamp without time zone");
                     }
                 }
             }

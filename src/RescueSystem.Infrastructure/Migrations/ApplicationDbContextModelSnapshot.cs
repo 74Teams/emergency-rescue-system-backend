@@ -385,7 +385,7 @@ namespace RescueSystem.Infrastructure.Migrations
 
                     b.HasIndex("ChecklistId");
 
-                    b.ToTable("ChecklistItems");
+                    b.ToTable("ChecklistItems", (string)null);
                 });
 
             modelBuilder.Entity("RescueSystem.Domain.Entities.Contact", b =>
@@ -587,7 +587,7 @@ namespace RescueSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OtpCodes");
+                    b.ToTable("OtpCodes", (string)null);
                 });
 
             modelBuilder.Entity("RescueSystem.Domain.Entities.RefreshToken", b =>
@@ -834,7 +834,7 @@ namespace RescueSystem.Infrastructure.Migrations
 
                     b.HasIndex("RescuerId");
 
-                    b.ToTable("RescueTeamJoinRequests");
+                    b.ToTable("RescueTeamJoinRequests", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
