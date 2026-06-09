@@ -38,6 +38,32 @@ namespace RescueSystem.Infrastructure.Persistence
             builder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins");
             builder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
             builder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens");
+
+            // Convert UTC DateTime values to GMT+7 (+7 hours) when writing to database
+            var dateTimeConverter = new Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter<DateTime, DateTime>(
+                v => v.Kind == DateTimeKind.Utc ? v.AddHours(7) : v,
+                v => v
+            );
+
+            var nullableDateTimeConverter = new Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter<DateTime?, DateTime?>(
+                v => v.HasValue && v.Value.Kind == DateTimeKind.Utc ? v.Value.AddHours(7) : v,
+                v => v
+            );
+
+            foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime))
+                    {
+                        property.SetValueConverter(dateTimeConverter);
+                    }
+                    else if (property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetValueConverter(nullableDateTimeConverter);
+                    }
+                }
+            }
         }
     }
 }

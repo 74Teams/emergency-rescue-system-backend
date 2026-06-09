@@ -7,6 +7,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: RescueSystem@123456Password
       POSTGRES_DB: RescueSystem
+      TZ: Asia/Ho_Chi_Minh
     ports:
       - "5432:5432"
     volumes:
@@ -32,6 +33,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=RescueSystem;Username=postgres;Password=RescueSystem@123456Password;
+      - TZ=Asia/Ho_Chi_Minh
     volumes:
       - aspnetcore_data:/app/data
 

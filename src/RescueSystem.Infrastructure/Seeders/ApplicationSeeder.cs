@@ -153,7 +153,7 @@ namespace RescueSystem.Infrastructure.Seeders
                     FullName = "Nguyễn Minh Quân",
                     PhoneNumber = "0905123456",
                     Address = "Hải Châu 1, Hải Châu, Đà Nẵng",
-                    DateOfBirth = DateTime.SpecifyKind(new DateTime(1988, 3, 12), DateTimeKind.Utc),
+                    DateOfBirth = new DateTime(1988, 3, 12),
                     IsActive = true,
                     EmailConfirmed = true
                 };
@@ -278,7 +278,7 @@ namespace RescueSystem.Infrastructure.Seeders
                 FullName = fullName,
                 PhoneNumber = phone,
                 Address = address,
-                DateOfBirth = DateTime.SpecifyKind(dateOfBirth, DateTimeKind.Utc),
+                DateOfBirth = dateOfBirth,
                 IsActive = true,
                 EmailConfirmed = true
             };

@@ -9,9 +9,6 @@ using RescueSystem.Application;
 using RescueSystem.Infrastructure;
 using Microsoft.OpenApi;
 
-// Enable legacy timestamp behavior for Npgsql to support DateTimeKind.Unspecified mapping to timestamptz
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
