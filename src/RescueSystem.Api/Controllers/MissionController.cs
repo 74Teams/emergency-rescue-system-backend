@@ -13,6 +13,7 @@ using RescueSystem.Domain.Entities;
 using RescueSystem.Application.Common.Exception;
 using RescueSystem.Application.Features.Missions.Commands.AbortMission;
 using RescueSystem.Application.Features.Missions.Queries.GetMissionHistory;
+using RescueSystem.Application.Features.Missions.Commands.DeleteMission;
 
 
 namespace RescueSystem.Api.Controllers
@@ -236,6 +237,26 @@ namespace RescueSystem.Api.Controllers
             );
         }
 
+
+        // DELETE api/missions/{id}
+        [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = "Delete a mission",
+            Description = "Xóa nhiệm vụ bằng ID, trả yêu cầu về PENDING và đội cứu hộ về AVAILABLE"
+        )]
+        [SwaggerResponse(200, "Xóa nhiệm vụ thành công", typeof(ApiResponse<bool>))]
+        [SwaggerResponse(404, "Không tìm thấy nhiệm vụ")]
+        public async Task<ActionResult<object>> DeleteMission([FromRoute] Guid id)
+        {
+            var res = await mediator.Send(new DeleteMissionCommand { MissionId = id });
+            return Ok(
+                ApiResponse<bool>.SuccessResponse(
+                    data: res,
+                    message: "Xóa nhiệm vụ thành công",
+                    statusCode: StatusCodes.Status200OK
+                )
+            );
+        }
 
     }
 }

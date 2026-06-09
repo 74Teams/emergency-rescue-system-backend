@@ -86,7 +86,10 @@ namespace RescueSystem.Application.Features.Request.Commands.UpdateRequest
                 medias = (await Task.WhenAll(uploadTasks)).ToList();
             }
 
-            existingRequest.UserId = request.UserId;
+            if (request.UserId.HasValue && request.UserId.Value != Guid.Empty)
+            {
+                existingRequest.UserId = request.UserId.Value;
+            }
             existingRequest.EmergencyType = request.EmergencyType;
             existingRequest.Priority = request.Priority;
             // existingRequest.Status = request.Status; //EDIT: 30/5 by Dieu - Bỏ quyền tự ý cập nhật Status

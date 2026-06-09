@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using RescueSystem.Application.Common.Exception;
@@ -104,8 +105,39 @@ namespace RescueSystem.Infrastructure.Persistence.Repositories
         }
         public async Task UpdateAsync(RescueRequest request)
         {
-            _context.Entry(request).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            var existing = await _context.Requests
+                .Include(r => r.Medias)
+                .FirstOrDefaultAsync(r => r.Id == request.Id);
+
+            if (existing != null)
+            {
+                // Update scalar properties (includes UserId, LocationId, Status, Description, etc.)
+                _context.Entry(existing).CurrentValues.SetValues(request);
+
+                // Sync Medias collection
+                if (request.Medias != null)
+                {
+                    // Remove medias that are no longer in the request
+                    foreach (var existingMedia in existing.Medias.ToList())
+                    {
+                        if (!request.Medias.Any(m => m.PublicId == existingMedia.PublicId))
+                        {
+                            _context.Remove(existingMedia);
+                        }
+                    }
+
+                    // Add new medias
+                    foreach (var requestMedia in request.Medias)
+                    {
+                        if (!existing.Medias.Any(m => m.PublicId == requestMedia.PublicId))
+                        {
+                            existing.Medias.Add(requestMedia);
+                        }
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+            }
         }
         public async Task UpdateStatusAsync(Guid requestId, RequestStatus status)
         {

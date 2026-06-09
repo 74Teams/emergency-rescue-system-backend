@@ -22,6 +22,11 @@ namespace RescueSystem.Application.Features.Request.Commands.DeleteRequest
                 throw new NotFoundException("Không tìm thấy yêu cầu cứu hộ");
             }
 
+            if (requestEntity.Missions != null && requestEntity.Missions.Count > 0)
+            {
+                throw new BadRequestException("Không thể xóa yêu cầu cứu hộ đang liên kết với nhiệm vụ.");
+            }
+
             await _requestRepository.DeleteAsync(requestEntity);
             return true;
         }
