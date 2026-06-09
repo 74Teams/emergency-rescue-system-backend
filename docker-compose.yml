@@ -35,8 +35,26 @@ services:
     volumes:
       - aspnetcore_data:/app/data
 
+  caddy:
+    image: caddy:2-alpine
+    container_name: rescuesystem_proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - api
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
 volumes:
   postgres_data:
     driver: local
   aspnetcore_data:
+    driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
     driver: local

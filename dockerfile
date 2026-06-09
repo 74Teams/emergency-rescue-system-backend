@@ -29,7 +29,7 @@ COPY --from=build /app/publish .
 # Expose HTTP port
 EXPOSE 8080
 
-# Environment variables
+# Environment variablesgit 
 ENV ASPNETCORE_URLS=http://+:8080
 ENV ASPNETCORE_ENVIRONMENT=Production
 
